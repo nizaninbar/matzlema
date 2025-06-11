@@ -4,4 +4,7 @@ import vue from '@vitejs/plugin-vue'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue()],
+  base: '/matzlema/', // change to your repo name
+  publicPath: '/matzlema/', // change to your repo name
+  outputDir: 'dist',
 })
