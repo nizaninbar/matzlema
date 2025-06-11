@@ -1,0 +1,33 @@
+/* style.css – עיצוב בסיסי לאפליקציה */
+
+body {
+  font-family: "Segoe UI", "Heebo", sans-serif;
+  margin: 0;
+  padding: 0;
+  direction: rtl;
+  background-color: #f4f6f8;
+  color: #222;
+}
+
+h1, h2 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+button {
+  font-family: inherit;
+}
+
+input:focus,
+select:focus,
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+#app {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: auto;
+}
