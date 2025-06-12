@@ -3,26 +3,37 @@
     display: none;
   }
 
+  .form{
+    display: none !important;
+  }
+
   #pdf-content, #pdf-content * {
-    display: block !important;
+    /* display: block !important; */
     overflow: visible;
   }
 
   #pdf-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 20px;
+    /* position: absolute; */
+    /* top: 0; */
+    /* left: 0; */
+    /* width: 100%; */
+    /* padding: 20px; */
     font-size: 12px;
-    direction: rtl; /* for Hebrew */
+    /* direction: rtl;  */
   }
 
   input, select, textarea {
     border: none;
     font: inherit;
     width: 100%;
+    appearance: none;
   }
+
+  .page-break-avoid {
+    break-inside: avoid;
+    page-break-inside: avoid; 
+  }
+
 }
 
 

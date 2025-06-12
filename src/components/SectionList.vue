@@ -27,7 +27,7 @@
 
     <!-- Sections List -->
     <div class="sections-list">
-      <div v-for="(section, i) in sections" :key="i" class="section-card">
+      <div v-for="(section, i) in sections" :key="i" class="section-card page-break-avoid">
         <div class="section-row">
           <div class="field">
             <label>מתא</label>

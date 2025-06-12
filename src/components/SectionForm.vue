@@ -71,11 +71,15 @@
 
       </textarea>
     </div>
+    
     <button type="submit" class="submit-button">הוסף מקטע</button>
+    <ExportButton />
   </form>
+  
 </template>
 <script setup>
 import { reactive } from 'vue';
+import ExportButton from './ExportButton.vue';
 
 const emit = defineEmits(['add-section']);
 const section = reactive({

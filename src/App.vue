@@ -1,12 +1,11 @@
 
 <template>
   <div class="app">
-    <h1>דו\"ח צילום צנרת</h1>
+    <!-- <h1>דו\"ח צילום צנרת</h1> -->
     <div class="layout">
       <SectionForm @add-section="addSection" />
       <SectionList :sections="sections" />
     </div>
-    <ExportButton />
   </div>
 </template>
 
@@ -15,7 +14,7 @@
 import { ref, provide } from 'vue';
 import SectionForm from './components/SectionForm.vue';
 import SectionList from './components/SectionList.vue';
-import ExportButton from './components/ExportButton.vue';
+
 
 const sections = ref([]);
 function addSection(section) {
