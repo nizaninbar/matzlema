@@ -1,3 +1,32 @@
+@media print {
+  form * {
+    display: none;
+  }
+
+  #pdf-content, #pdf-content * {
+    display: block !important;
+    overflow: visible;
+  }
+
+  #pdf-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    font-size: 12px;
+    direction: rtl; /* for Hebrew */
+  }
+
+  input, select, textarea {
+    border: none;
+    font: inherit;
+    width: 100%;
+  }
+}
+
+
+
 /* style.css – עיצוב בסיסי לאפליקציה */
 
 body {
