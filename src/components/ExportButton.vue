@@ -4,24 +4,17 @@
   </button>
 </template>
 
-<script setup>
-import html2pdf from 'html2pdf.js';
-
-function exportToPDF() {
-  document.title = 'דו"ח 7073 , אתר: ראשון';
-  window.print();
-  // const element = document.getElementById('pdf-content');
-  // html2pdf()
-  //   .set({
-  //     margin: 0.5,
-  //     filename: 'דו"ח.pdf',
-  //     image: { type: 'jpeg', quality: 0.98 },
-  //     html2canvas: { scale: 2 },
-  //     jsPDF: { unit: 'cm', format: 'a4', orientation: 'portrait' }
-  //   })
-  //   .from(element)
-  //   .save();
-}
+<script>
+// import html2pdf from 'html2pdf.js';
+export default {
+  props: ['message'],
+  methods: {
+    exportToPDF() {
+      document.title = this.message
+      window.print();
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -35,7 +28,8 @@ function exportToPDF() {
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  margin: 0 100px;
+  margin: 20px auto;
+  display: block;
 }
 
 .export-button:hover {

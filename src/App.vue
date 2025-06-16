@@ -28,6 +28,8 @@ provide('sections', sections);
   display: flex;
   gap: 20px;
   align-items: flex-start;
+  height: 100vh;
+  padding: 20px;
 }
 
 .layout > *:first-child {

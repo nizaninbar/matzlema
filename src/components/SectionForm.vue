@@ -43,23 +43,29 @@
   <form @submit.prevent="submitSection" class="form">
     <div class="form-group">
       <label>מתא</label>
-      <input v-model="section.from" required />
+      <input v-model="section.from"  />
     </div>
     <div class="form-group">
       <label>לתא</label>
-      <input v-model="section.to" required />
+      <input v-model="section.to"  />
     </div>
     <div class="form-group">
       <label>קוטר (מ"מ)</label>
-      <input v-model="section.diameter" type="number" required />
+      <input v-model="section.diameter" type="number"  />
     </div>
     <div class="form-group">
       <label>סוג צינור</label>
-      <input v-model="section.pipeType" required />
+      <select v-model="section.pipeType">
+        <option value="PVC">PVC</option>
+        <option value="PE">PE</option>
+        <option value="פיברגלס">פיברגלס</option>
+        <option value="ברזל">ברזל</option>
+        <option value="אחר">אחר</option>
+      </select>
     </div>
     <div class="form-group">
       <label>אורך (מ')</label>
-      <input v-model="section.length" type="number" required />
+      <input v-model="section.length" type="number"  />
     </div>
     <div class="form-group">
       <label>כיוון צילום</label>
@@ -73,13 +79,12 @@
     </div>
     
     <button type="submit" class="submit-button">הוסף מקטע</button>
-    <ExportButton />
   </form>
   
 </template>
 <script setup>
 import { reactive } from 'vue';
-import ExportButton from './ExportButton.vue';
+
 
 const emit = defineEmits(['add-section']);
 const section = reactive({

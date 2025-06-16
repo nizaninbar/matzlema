@@ -28,12 +28,22 @@
     width: 100%;
     appearance: none;
   }
-
+  .export-button {
+    display: none !important;
+  }
   .page-break-avoid {
     break-inside: avoid;
     page-break-inside: avoid; 
   }
 
+  body{
+    overflow: visible !important;
+    height: auto !important;
+  }
+  .report{
+    border-radius: 0;
+    box-shadow: none !important;
+  }
 }
 
 
@@ -48,7 +58,12 @@ body {
   background-color: #f4f6f8;
   color: #222;
 }
-
+html, body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent page scroll */
+}
 h1, h2 {
   color: #2c3e50;
   text-align: center;
@@ -67,7 +82,7 @@ button:focus {
 }
 
 #app {
-  padding: 40px 20px;
-  max-width: 1200px;
+  /* padding: 40px 20px; */
+  /* max-width: 1200px; */
   margin: auto;
 }
