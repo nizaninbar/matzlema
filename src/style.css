@@ -7,21 +7,24 @@
     display: none !important;
   }
 
+  .description {
+    display: none !important;
+  }
+
+  .description-print {
+    white-space: pre-wrap;
+    display: block !important;
+  }
+
   #pdf-content, #pdf-content * {
     /* display: block !important; */
     overflow: visible;
   }
 
   #pdf-content {
-    /* position: absolute; */
-    /* top: 0; */
-    /* left: 0; */
-    /* width: 100%; */
-    /* padding: 20px; */
     font-size: 12px;
-    /* direction: rtl;  */
   }
-
+  
   input, select, textarea {
     border: none;
     font: inherit;
@@ -40,10 +43,22 @@
     overflow: visible !important;
     height: auto !important;
   }
-  .report{
-    border-radius: 0;
+  .report-header {
+    margin-bottom: 620px !important;
+    box-shadow: none;
+
+  }
+  #pdf-content{
     box-shadow: none !important;
   }
+
+  .summary{
+    min-height: 1000px !important;
+  }
+  .section-controls {
+    display: none !important;
+  }
+
 }
 
 
@@ -85,4 +100,15 @@ button:focus {
   /* padding: 40px 20px; */
   /* max-width: 1200px; */
   margin: auto;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

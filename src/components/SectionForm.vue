@@ -1,44 +1,3 @@
-
-<!--
-  This is the section form where users can input details about the pipe section.
-
-<template>
-  <form @submit.prevent="submitSection" class="form">
-    <div class="form-group">
-      <label>מתא</label>
-      <input v-model="section.from" required />
-    </div>
-    <div class="form-group">
-      <label>לתא</label>
-      <input v-model="section.to" required />
-    </div>
-    <div class="form-group">
-      <label>קוטר (מ"מ)</label>
-      <input v-model="section.diameter" type="number" required />
-    </div>
-    <div class="form-group">
-      <label>סוג צינור</label>
-      <input v-model="section.pipeType" required />
-    </div>
-    <div class="form-group">
-      <label>אורך (מ')</label>
-      <input v-model="section.length" type="number" required />
-    </div>
-    <div class="form-group">
-      <label>כיוון צילום</label>
-      <input v-model="section.direction" />
-    </div>
-    <div class="form-group">
-      <label>מצב</label>
-      <select v-model="section.status">
-        <option value="תקין">תקין</option>
-        <option value="לבדיקה">לבדיקה</option>
-      </select>
-    </div>
-    <button type="submit" class="submit-button">הוסף מקטע</button>
-  </form>
-</template>
--->
 <template>
   <form @submit.prevent="submitSection" class="form">
     <div class="form-group">
@@ -51,31 +10,57 @@
     </div>
     <div class="form-group">
       <label>קוטר (מ"מ)</label>
-      <input v-model="section.diameter" type="number"  />
+      <select v-model="section.diameter" >
+        <option value="110">110</option>
+        <option value="160">160</option>
+        <option value="200">200</option>
+        <option value="225">225</option>
+        <option value="250">250</option>
+        <option value="300">300</option>
+        <option value="315">315</option>
+        <option value="335">335</option>
+        <option value="400">400</option>
+        <option value="450">450</option>
+        <option value="500">500</option>
+        <option value="600">600</option>
+        <option value="800">800</option>
+        <option value="1000">1000</option>
+        <option value="1250">1250</option>
+        <option value="*">אחר</option>
+      </select>
     </div>
+
     <div class="form-group">
       <label>סוג צינור</label>
       <select v-model="section.pipeType">
         <option value="PVC">PVC</option>
-        <option value="PE">PE</option>
+        <option value="פוליאתילן">פוליאתילן</option>
         <option value="פיברגלס">פיברגלס</option>
-        <option value="ברזל">ברזל</option>
+        <option value="פלדה">פלדה</option>
+        <option value="אסבסט">אסבסט</option>
+        <option value="פלדקס">פלדקס</option>
         <option value="אחר">אחר</option>
       </select>
     </div>
     <div class="form-group">
       <label>אורך (מ')</label>
-      <input v-model="section.length" type="number"  />
+      <input v-model="section.length" type="number" step="any" />
     </div>
     <div class="form-group">
       <label>כיוון צילום</label>
-      <input v-model="section.direction" />
+      <select v-model="section.direction">
+        <option value="מורד הקו">מורד הקו</option>
+        <option value="מעלה הקו">מעלה הקו</option>
+      </select>
     </div>
     <div class="form-group">
       <label>תיאור</label>
-      <textarea v-model="section.status">
-
+      <textarea v-model="section.description">
       </textarea>
+    </div>
+    <div class="form-group">
+      <label>שיוך לקובץ</label>
+      <input v-model="section.filename" placeholder="שם הקובץ" />
     </div>
     
     <button type="submit" class="submit-button">הוסף מקטע</button>
@@ -91,15 +76,20 @@ const section = reactive({
   from: '',
   to: '',
   diameter: '',
-  pipeType: '',
+  pipeType: 'PVC',
   length: '',
-  direction: '',
-  status: 'תקין'
+  direction: 'מורד הקו',
+  description: 'תקין',
+  filename: ''
 });
 
 function submitSection() {
   emit('add-section', { ...section });
-  Object.keys(section).forEach(k => section[k] = '');
+  section.description = 'תקין'; // Reset status to default
+  section.length = ''; // Reset length to empty
+  section.filename = ''; // Reset filename to empty
+
+  // Object.keys(section).forEach(k => section[k] = '');
 }
 </script>
 

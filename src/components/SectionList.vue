@@ -2,7 +2,7 @@
   <div class="container">
     <div id="pdf-content" class="report">
       <!-- Header -->
-      <div class="report-header">
+      <div class="report-header page-break-avoid">
         <div class="logo-container">
           <img src="../assets/mazlema.png" alt="לוגו" class="logo" />
         </div>
@@ -33,8 +33,13 @@
             <label>מיקום:</label>
             <input v-model="location" />
           </div>
+          <div class="field">
+            <label>ייעוד הצינור:</label>
+            <input v-model="pipePurpose" />
+          </div>
         </div>
       </div>
+
 
 
       <!-- Sections Title -->
@@ -42,7 +47,14 @@
 
       <!-- Sections List -->
       <div class="sections-list">
+
         <div v-for="(section, i) in sections" :key="i" class="section-card page-break-avoid">
+          <div class="section-controls">
+            <button @click="moveUp(i)" :disabled="i === 0" title="העבר מעלה">🔼</button>
+            <button @click="moveDown(i)" :disabled="i === sections.length - 1" title="העבר מטה">🔽</button>
+            <button class="delete-section" @click="removeSection(i)" title="מחק מקטע">✖</button>
+          </div>
+          
           <div class="section-row">
             <div class="field">
               <label>מתא</label>
@@ -54,15 +66,17 @@
             </div>
             <div class="field">
               <label>קוטר (מ"מ)</label>
-              <input v-model="section.diameter" type="number" />
+              <input v-model="section.diameter" />
             </div>
             <div class="field">
               <label>סוג</label>
               <select v-model="section.pipeType">
                 <option value="PVC">PVC</option>
-                <option value="PE">PE</option>
+                <option value="פוליאתילן">פוליאתילן</option>
                 <option value="פיברגלס">פיברגלס</option>
-                <option value="ברזל">ברזל</option>
+                <option value="פלדה">פלדה</option>
+                <option value="אסבסט">אסבסט</option>
+                <option value="פלדקס">פלדקס</option>
                 <option value="אחר">אחר</option>
               </select>
             </div>
@@ -77,28 +91,34 @@
               <label>כיוון</label>
               <input v-model="section.direction" />
             </div>
+            <div class="field">
+              <label>שיוך לקובץ</label>
+              <input v-model="section.filename" />
+            </div>
           </div>
 
           <div class="field full-width">
             <label>תיאור</label>
-            <textarea v-model="section.status" rows="3"></textarea>
+            <textarea v-model="section.description" rows="3" class="description"></textarea>
+            <div class="description-print">{{ section.description }}</div>
           </div>
+
         </div>
       </div>
-      <div class="page-break-avoid">
+      <div class="summary page-break-avoid">
         <h2>סיכום דו"ח</h2>
         <p>סך הכל מקטעים: {{ sections.length }}</p>
         <p>סה"כ אורך: {{ sections.reduce((sum, section) => sum + (section.length || 0), 0) }} מ'</p>
         <textarea class="full-width" rows="10" >
-          דו"ח זה נערך על ידי מערכת צילום צנרת אוטומטית. 
-          כל המידע נאסף במהלך הצילום ונבדק על ידי צוות מקצועי.
-          דו"ח זה מהווה תיעוד מלא של מצב הצנרת במועד הצילום.
-          
+1. צולמו קיטעי ({{ pipePurpose }}), ב: {{ location }}
+2. הקטעים שצולמו
         </textarea>
-
+        <div class="signature">
+          <img src="../assets/sig.jpg" alt="חתימה"  />
+        </div>
       </div>
     </div>
-    <ExportButton :message="'דוח: ' + reportNumber + ' לקוח: ' + customerName + ' אתר: ' + location"/>
+    <ExportButton :message="'דוח: (' + reportNumber + ') לקוח: (' + customerName + ') אתר: (' + location + ')'"/>
   </div>
 </template>
 
@@ -111,9 +131,53 @@ const customerName = ref('');
 const reportDate = ref(new Date().toISOString().substr(0, 10));
 const reportNumber = ref(0);
 const location = ref('');
+const pipePurpose = ref('');
+function removeSection(index) {
+  sections.value.splice(index, 1);
+}
+function moveUp(index) {
+  if (index > 0) {
+    const temp = sections.value[index];
+    sections.value[index] = sections.value[index - 1];
+    sections.value[index - 1] = temp;
+  }
+}
+
+function moveDown(index) {
+  if (index < sections.value.length - 1) {
+    const temp = sections.value[index];
+    sections.value[index] = sections.value[index + 1];
+    sections.value[index + 1] = temp;
+  }
+}
 </script>
 
 <style scoped>
+.description-print {
+  display: none;
+}
+
+.section-controls {
+  
+  display: flex;
+  flex-direction: row;
+  gap: 18px;
+}
+
+.section-controls button {
+  background: #eee;
+  border: none;
+  padding: 4px 6px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.section-controls button:hover {
+  background: #ccc;
+}
+
 .header-title {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -158,7 +222,6 @@ const location = ref('');
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
 }
 
 .logo-container {
@@ -168,8 +231,21 @@ const location = ref('');
 }
 
 .logo {
+  
+  height: auto; 
+  width: 120px;
+  
+}
+.signature{
+  display: flex;
+  flex-direction: column;
+  direction: ltr;
+
+}
+.signature img {
   width: 120px;
   height: auto;
+  margin: 25px;
 }
 
 .header-fields {
@@ -191,7 +267,9 @@ const location = ref('');
 .field label {
   font-weight: bold;
   margin-bottom: 4px;
+  font-size: 13px;
 }
+
 
 input,
 select,
@@ -235,4 +313,10 @@ select {
   width: 100%;
 }
 
+.company-info {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  line-height: 1.6;
+}
 </style>
