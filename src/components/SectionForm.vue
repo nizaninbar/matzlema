@@ -1,6 +1,13 @@
 <template>
   <form @submit.prevent="submitSection" class="form">
     <div class="form-group">
+      <label>שיוך לקובץ</label>
+      <input v-model="section.filename" placeholder="שם הקובץ" />
+    </div>
+    <div class="form-group" style="visibility: hidden;">
+    </div>
+
+    <div class="form-group">
       <label>מתא</label>
       <input v-model="section.from"  />
     </div>
@@ -58,10 +65,7 @@
       <textarea v-model="section.description">
       </textarea>
     </div>
-    <div class="form-group">
-      <label>שיוך לקובץ</label>
-      <input v-model="section.filename" placeholder="שם הקובץ" />
-    </div>
+
     
     <button type="submit" class="submit-button">הוסף מקטע</button>
   </form>
@@ -80,14 +84,17 @@ const section = reactive({
   length: '',
   direction: 'מורד הקו',
   description: 'תקין',
-  filename: ''
+  sequence: 1,
+  filename: '01',
+  
 });
 
 function submitSection() {
   emit('add-section', { ...section });
   section.description = 'תקין'; // Reset status to default
   section.length = ''; // Reset length to empty
-  section.filename = ''; // Reset filename to empty
+  section.sequence += 1; // Increment sequence for new section
+  section.filename = section.sequence.toString().padStart(2, '0'); // Reset filename to empty
 
   // Object.keys(section).forEach(k => section[k] = '');
 }

@@ -35,7 +35,13 @@
           </div>
           <div class="field">
             <label>ייעוד הצינור:</label>
-            <input v-model="pipePurpose" />
+            <!-- <input v-model="pipePurpose" /> -->
+            <select v-model="pipePurpose">
+              <option value="מים">מים</option>
+              <option value="ביוב">ביוב</option>
+              <option value="ניקוז">ניקוז</option>
+              <option value="השחלה">השחלה</option>
+            </select>
           </div>
         </div>
       </div>
@@ -110,7 +116,7 @@
         <p>סך הכל מקטעים: {{ sections.length }}</p>
         <p>סה"כ אורך: {{ sections.reduce((sum, section) => sum + (section.length || 0), 0) }} מ'</p>
         <textarea class="full-width" rows="10" >
-1. צולמו קיטעי ({{ pipePurpose }}), ב: {{ location }}
+1. צולמו קיטעי {{ pipePurpose }}, ב{{ location }}
 2. הקטעים שצולמו
         </textarea>
         <div class="signature">
@@ -131,7 +137,7 @@ const customerName = ref('');
 const reportDate = ref(new Date().toISOString().substr(0, 10));
 const reportNumber = ref(0);
 const location = ref('');
-const pipePurpose = ref('');
+const pipePurpose = ref('ביוב');
 function removeSection(index) {
   sections.value.splice(index, 1);
 }
