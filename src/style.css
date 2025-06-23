@@ -1,8 +1,13 @@
 @media print {
+  .full-width {
+    border: 1px solid #ccc !important;
+  }
   form * {
     display: none;
   }
-
+  .section-card{
+    border: none !important;
+  }
   .form{
     display: none !important;
   }

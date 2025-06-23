@@ -6,7 +6,56 @@
         <div class="logo-container">
           <img src="../assets/mazlema.png" alt="לוגו" class="logo" />
         </div>
-        <div class="header-title">
+        <h2>דו"ח צילום צנרת מס'<br/>{{ reportNumber }}</h2>
+        <table >
+          <thead>
+            <td>מספר דו"ח</td>
+            <td>מיקום</td>
+            <td>&nbsp;ייעוד הצינור&nbsp;</td>
+            <td>שם לקוח</td>
+            <td>תאריך</td>
+            <td>פרטים נוספים</td>
+          </thead>
+          <tr>
+            <td><input v-model="reportNumber" /></td>
+            <td><input v-model="location" /></td>
+            <td>
+              <select v-model="pipePurpose">
+                <option value="מים">מים</option>
+                <option value="ביוב">ביוב</option>
+                <option value="ניקוז">ניקוז</option>
+                <option value="השחלה">השחלה</option>
+              </select>
+            </td>
+            <td><input v-model="customerName" /></td>
+            <td><input type="date" v-model="reportDate" /></td>
+            <td><input v-model="additionalInfo" /></td>
+          </tr>
+        </table>
+
+        <table>
+          <thead>
+            <td>צלם מוסמך</td>
+            <td>מס' תעודה</td>
+            <td>כתובת</td>
+            <td>מיקוד</td>
+            <td>טל'</td>
+            <td>טלפקס</td>
+            <td>דוא"ל</td>
+            <td>ע.מ</td>
+          </thead>
+          <tr>
+            <td>דוד כהן</td>
+            <td>23774</td>
+            <td>הירדן 2, מושב ישרש</td>
+            <td>76838</td>
+            <td>054-6655305</td>
+            <td>08-6168321</td>
+            <td>office@matzlema.co.il</td>
+            <td>035920024</td>
+          </tr>
+        </table>
+        <!-- <div class="header-title">
           <div class="header-line"><span class="label">צלם מוסמך:</span><span class="value">דוד כהן</span></div>
           <div class="header-line"><span class="label">מס׳ תעודה:</span><span class="value">23774</span></div>
           <div class="header-line"><span class="label">כתובת:</span><span class="value">הירדן 2, מושב ישרש</span></div>
@@ -15,35 +64,7 @@
           <div class="header-line"><span class="label">טלפקס:</span><span class="value">08-6168321</span></div>
           <div class="header-line"><span class="label">דוא"ל:</span><span class="value">office@matzlema.co.il</span></div>
           <div class="header-line"><span class="label">ע.מ:</span><span class="value">035920024</span></div>
-        </div>
-        <div class="header-fields">
-          <div class="field">
-            <label>דו"ח:</label>
-            <input v-model="reportNumber" />
-          </div>
-          <div class="field">
-            <label>שם לקוח:</label>
-            <input v-model="customerName" />
-          </div>
-          <div class="field">
-            <label>תאריך:</label>
-            <input type="date" v-model="reportDate" />
-          </div>
-          <div class="field">
-            <label>מיקום:</label>
-            <input v-model="location" />
-          </div>
-          <div class="field">
-            <label>ייעוד הצינור:</label>
-            <!-- <input v-model="pipePurpose" /> -->
-            <select v-model="pipePurpose">
-              <option value="מים">מים</option>
-              <option value="ביוב">ביוב</option>
-              <option value="ניקוז">ניקוז</option>
-              <option value="השחלה">השחלה</option>
-            </select>
-          </div>
-        </div>
+        </div> -->
       </div>
 
 
@@ -60,47 +81,38 @@
             <button @click="moveDown(i)" :disabled="i === sections.length - 1" title="העבר מטה">🔽</button>
             <button class="delete-section" @click="removeSection(i)" title="מחק מקטע">✖</button>
           </div>
-          
-          <div class="section-row">
-            <div class="field">
-              <label>מתא</label>
-              <input v-model="section.from" />
-            </div>
-            <div class="field">
-              <label>לתא</label>
-              <input v-model="section.to" />
-            </div>
-            <div class="field">
-              <label>קוטר (מ"מ)</label>
-              <input v-model="section.diameter" />
-            </div>
-            <div class="field">
-              <label>סוג</label>
-              <select v-model="section.pipeType">
-                <option value="PVC">PVC</option>
-                <option value="פוליאתילן">פוליאתילן</option>
-                <option value="פיברגלס">פיברגלס</option>
-                <option value="פלדה">פלדה</option>
-                <option value="אסבסט">אסבסט</option>
-                <option value="פלדקס">פלדקס</option>
-                <option value="אחר">אחר</option>
-              </select>
-            </div>
-          </div>
 
-          <div class="section-row">
-            <div class="field">
-              <label>אורך (מ')</label>
-              <input v-model="section.length" type="number" />
-            </div>
-            <div class="field">
-              <label>כיוון</label>
-              <input v-model="section.direction" />
-            </div>
-            <div class="field">
-              <label>שיוך לקובץ</label>
-              <input v-model="section.filename" />
-            </div>
+          <div class="section-grid">
+
+              <div>שיוך לקובץ</div>
+              <div>מתא</div>
+              <div>לתא</div>
+              <div>קוטר (מ"מ)</div>
+              <div>סוג</div>
+              <div>אורך (מ')</div>
+              <div>כיוון</div>
+
+              <div class="grid-cell"><input v-model="section.filename" /></div>
+              <div class="grid-cell"><input v-model="section.from" /></div>
+              <div class="grid-cell"><input v-model="section.to" /></div>
+              <div class="grid-cell"><input v-model="section.diameter" /></div>
+              <div class="grid-cell">
+                <select v-model="section.pipeType">
+                  <option value="PVC">PVC</option>
+                  <option value="פוליאתילן">פוליאתילן</option>
+                  <option value="פיברגלס">פיברגלס</option>
+                  <option value="פלדה">פלדה</option>
+                  <option value="אסבסט">אסבסט</option>
+                  <option value="פלדקס">פלדקס</option>
+                  <option value="אחר">אחר</option>
+                </select>
+              </div>
+              <div class="grid-cell"><input v-model="section.length" /></div>
+              <div class="grid-cell"><input v-model="section.direction" /></div>
+
+
+
+
           </div>
 
           <div class="field full-width">
@@ -108,6 +120,8 @@
             <textarea v-model="section.description" rows="3" class="description"></textarea>
             <div class="description-print">{{ section.description }}</div>
           </div>
+
+
 
         </div>
       </div>
@@ -124,7 +138,7 @@
         </div>
       </div>
     </div>
-    <ExportButton :message="'דוח: (' + reportNumber + ') לקוח: (' + customerName + ') אתר: (' + location + ')'"/>
+    <ExportButton :message="'דוח: ' + reportNumber + ' לקוח: ' + customerName + ' אתר: ' + location "/>
   </div>
 </template>
 
@@ -216,7 +230,7 @@ function moveDown(index) {
   /* max-width: 800px; */
 
   margin: auto;
-  font-size: 12px;
+  font-size: 1rem;
   padding: 20px;
   overflow-y: auto;
   max-height: 75vh;
@@ -232,7 +246,6 @@ function moveDown(index) {
 
 .logo-container {
   width: 100%;
-  text-align: center;
   margin-bottom: 10px;
 }
 
@@ -308,13 +321,6 @@ select {
   background-color: #f9f9f9;
 }
 
-.section-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 10px;
-}
-
 .full-width {
   width: 100%;
 }
@@ -325,4 +331,70 @@ select {
   font-size: 14px;
   line-height: 1.6;
 }
+
+table{
+  width: 100%;
+  /* border-collapse: collapse; */
+  /* border: 1px solid #ddd; */
+  margin-bottom: 20px;
+  text-align: center;
+}
+table th, table td {
+  padding: 1px;
+  border: 1px solid #ddd;
+  text-align: center;
+  
+}
+table thead {
+  font-weight: bold;
+  
+}
+table input {
+  border: none;
+  text-align: center;
+}
+
+table select {
+  width: 100%;
+  padding: 4px;
+  border-radius: 4px;
+  border: none;
+
+}
+
+.section-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  /* gap: 8px; */
+  /* margin-bottom: 12px; */
+}
+
+.section-grid input,
+.section-grid select {
+
+  border: none;
+
+}
+
+.section-grid div {
+  padding: 2px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  margin: 1px 0;
+}
+/* .grid-header{
+  
+  font-weight: bold;
+  
+  padding: 8px;
+  
+}
+
+.grid-row {
+  
+  gap: 8px;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+} */
+
 </style>
