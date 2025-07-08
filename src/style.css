@@ -1,6 +1,30 @@
 @media print {
-  .full-width {
-    border: 1px solid #ccc !important;
+  button{
+    display: none !important;
+  }
+  #page-header {
+    position: running(header);
+  }
+
+  @page {
+    @top-center {
+      content: element(header);
+    }
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+  }
+  .hide-on-print {
+    display: none !important;
+  }
+  .show-on-print {
+    white-space: pre-wrap !important;
+    display: block !important;
+  }
+  .custom-file-upload {
+    display: none !important;
   }
   form * {
     display: none;
@@ -27,16 +51,17 @@
   }
 
   #pdf-content {
-    font-size: 12px;
+    font-size: 1rem !important;
   }
   
   input, select, textarea {
-    border: none;
+    border: none !important;
     font: inherit;
     width: 100%;
-    appearance: none;
+    appearance: none !important;
+    resize: none;
   }
-  .export-button {
+  .export-button, .action-button{
     display: none !important;
   }
   .page-break-avoid {
@@ -57,13 +82,18 @@
     box-shadow: none !important;
   }
 
-  .summary{
+  .onepage{
     min-height: 1020px !important;
   }
   .section-controls {
     display: none !important;
   }
 
+  .section-grid input
+  , .section-grid select{
+    font-weight: normal;
+    text-align: center;
+  }
 }
 
 

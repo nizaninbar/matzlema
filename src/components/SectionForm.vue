@@ -46,6 +46,7 @@
         <option value="פלדה">פלדה</option>
         <option value="אסבסט">אסבסט</option>
         <option value="פלדקס">פלדקס</option>
+        <option value="בטון">בטון</option>
         <option value="אחר">אחר</option>
       </select>
     </div>
@@ -61,7 +62,7 @@
       </select>
     </div>
     <div class="form-group">
-      <label>תיאור</label>
+      <label>ממצאים</label>
       <textarea v-model="section.description">
       </textarea>
     </div>
@@ -84,8 +85,8 @@ const section = reactive({
   length: '',
   direction: 'מורד הקו',
   description: 'תקין',
-  sequence: 1,
-  filename: '01',
+  sequence: 0,
+  filename: '00',
   
 });
 
@@ -109,6 +110,7 @@ function submitSection() {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 460px;
 }
 
 .form-group {

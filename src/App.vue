@@ -4,6 +4,8 @@
     <!-- <h1>דו\"ח צילום צנרת</h1> -->
     <div class="layout">
       <SectionForm @add-section="addSection" />
+
+
       <SectionList :sections="sections" />
     </div>
   </div>
@@ -11,10 +13,35 @@
 
 
 <script setup>
-import { ref, provide } from 'vue';
+import { ref, provide, onMounted, onBeforeUnmount } from 'vue';
 import SectionForm from './components/SectionForm.vue';
 import SectionList from './components/SectionList.vue';
 
+
+
+
+
+
+
+
+const hasUnsavedChanges = ref(true) // set to true if something changes
+
+function handleBeforeUnload(e) {
+  if (hasUnsavedChanges.value) {
+    e.preventDefault()
+    e.returnValue = '' // This triggers the browser's default dialog
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('beforeunload', handleBeforeUnload)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('beforeunload', handleBeforeUnload)
+})
+
+// 
 
 const sections = ref([]);
 function addSection(section) {
