@@ -37,6 +37,14 @@ npm run deploy:v1             # current working tree -> /matzlema/v1/
 npm run deploy:prod -- --yes  # current working tree -> /matzlema/   (guarded)
 ```
 
+Add `-- --dry-run` to any of them to build and check the output without publishing
+anything. The dry run asserts that every absolute asset path in the built `index.html`
+starts with the expected base and fails loudly if not — worth running before a promote:
+
+```bash
+npm run deploy:prod -- --dry-run
+```
+
 Whatever is checked out is what gets built. The `base` path is passed to Vite on the
 command line, so no version needs its own `vite.config.js` — that is what lets the frozen
 v1 be rebuilt for a different path without editing it.
