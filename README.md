@@ -5,16 +5,20 @@ CCTV inspection reports. An operator enters the inspected sections one by one, a
 stills pulled from the robot's video, and exports the whole thing as a printable /
 PDF report in Hebrew (RTL).
 
-Deployed as a static site to GitHub Pages under the `/matzlema/` base path.
+> **This is the `v1` branch — the frozen production version.** It holds the app exactly as
+> tagged `v1.0.0`, plus deploy tooling. Only hotfixes belong here; the v2 rewrite is on
+> `master`. See [docs/VERSIONING.md](docs/VERSIONING.md).
 
 ## Quick start
 
 ```bash
-npm install
-npm run dev        # Vite dev server
-npm run build      # production build into dist/
-npm run preview    # serve the production build locally
-npm run deploy     # publish dist/ to GitHub Pages via gh-pages
+npm ci
+npm run dev                   # Vite dev server
+npm run build                 # production build into dist/
+npm run preview               # serve the production build locally
+
+npm run deploy:prod -- --yes  # publish to /matzlema/   (v1 owns the main URL)
+npm run deploy:v1             # publish to /matzlema/v1/ (archive copy)
 ```
 
 Requires Node 18+ (Vite 6).
