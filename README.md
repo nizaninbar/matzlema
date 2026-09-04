@@ -5,16 +5,20 @@ CCTV inspection reports. An operator enters the inspected sections one by one, a
 stills pulled from the robot's video, and exports the whole thing as a printable /
 PDF report in Hebrew (RTL).
 
-Deployed as a static site to GitHub Pages under the `/matzlema/` base path.
+Deployed as a static site to GitHub Pages. **Two versions run side by side** — v1 in
+production at `/matzlema/`, the v2 rewrite at `/matzlema/next/`. See
+[docs/VERSIONING.md](docs/VERSIONING.md) before deploying anything.
 
 ## Quick start
 
 ```bash
-npm install
-npm run dev        # Vite dev server
-npm run build      # production build into dist/
-npm run preview    # serve the production build locally
-npm run deploy     # publish dist/ to GitHub Pages via gh-pages
+npm ci
+npm run dev                   # Vite dev server
+npm run build                 # production build into dist/
+npm run preview               # serve the production build locally
+
+npm run deploy:staging        # publish to /matzlema/next/   (v2 staging)
+npm run deploy:prod -- --yes  # publish to /matzlema/        (guarded)
 ```
 
 Requires Node 18+ (Vite 6).
@@ -36,5 +40,6 @@ manual JSON download/upload.
 
 ## Documentation
 
+- [docs/VERSIONING.md](docs/VERSIONING.md) — how v1 and v2 run in parallel, deploying, rolling back
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — how it is put together, data model, the print pipeline
 - [docs/REVIEW.md](docs/REVIEW.md) — code review findings and a prioritized refactoring plan
