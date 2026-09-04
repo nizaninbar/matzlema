@@ -2,26 +2,9 @@
   button{
     display: none !important;
   }
-  #page-header {
-    position: running(header);
-  }
-
-  @page {
-    @top-center {
-      content: element(header);
-    }
-  }
-
   input[type="date"]::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
-  }
-  .hide-on-print {
-    display: none !important;
-  }
-  .show-on-print {
-    white-space: pre-wrap !important;
-    display: block !important;
   }
   .custom-file-upload {
     display: none !important;
@@ -132,8 +115,6 @@ button:focus {
 }
 
 #app {
-  /* padding: 40px 20px; */
-  /* max-width: 1200px; */
   margin: auto;
 }
 

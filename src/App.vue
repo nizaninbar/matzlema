@@ -1,30 +1,21 @@
-
 <template>
   <div class="app">
-    <!-- <h1>דו\"ח צילום צנרת</h1> -->
     <div class="layout">
       <SectionForm @add-section="addSection" />
-
-
-      <SectionList :sections="sections" />
+      <!-- SectionList reads `sections` via inject, not props -->
+      <SectionList />
     </div>
   </div>
 </template>
-
 
 <script setup>
 import { ref, provide, onMounted, onBeforeUnmount } from 'vue';
 import SectionForm from './components/SectionForm.vue';
 import SectionList from './components/SectionList.vue';
 
-
-
-
-
-
-
-
-const hasUnsavedChanges = ref(true) // set to true if something changes
+// FIXME: hardcoded, so the unload prompt fires even on an untouched page.
+// Should be set on the first mutation and cleared on save. See docs/REVIEW.md #4.
+const hasUnsavedChanges = ref(true)
 
 function handleBeforeUnload(e) {
   if (hasUnsavedChanges.value) {
@@ -40,8 +31,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('beforeunload', handleBeforeUnload)
 })
-
-// 
 
 const sections = ref([]);
 function addSection(section) {

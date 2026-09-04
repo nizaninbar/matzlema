@@ -221,9 +221,6 @@
               <button @click="removeImage(index)" class="remove-image">✖</button>
               <img :src="image" alt="Uploaded Image" class="uploaded-image"/>
             </div>
-              <!-- <img v-for="(image, index) in images" :key="index" :src="image" alt="Uploaded Image"/> -->
-
-              <!-- <button @click="removeImage(index)" class="remove-image">✖</button> -->
             </div>
           </div>
         </div>
@@ -234,9 +231,7 @@
         <p>סך הכל מקטעים: {{ sections.length }}</p>
         <p>סה"כ אורך: {{ sections.reduce((sum, section) => sum + (section.length || 0), 0) }} מ'</p>
         <p class="no-bold">1. צולמו קיטעי {{ pipePurpose }}, ב{{ location }}</p>
-        <textarea class="full-width no-bold" rows="10" v-model="summaryText" >
-2. הקטעים שצולמו
-        </textarea>
+        <textarea class="full-width no-bold" rows="10" v-model="summaryText"></textarea>
         <div class="signature">
           <p>בברכה: דוד כהן</p>
           <img src="../assets/sig.jpg" alt="חתימה"  />
@@ -346,15 +341,11 @@ function moveDown(index) {
 }
 
 const images = ref([]);
-// const imageUrl = ref(null)
 
 function handleFileChange(event) {
-  // debugger
   const file = event.target.files[0]
-  const imageUrl = ref(null)
   if (file && file.type.startsWith('image/')) {
-     imageUrl.value = URL.createObjectURL(file)
-    images.value.push(imageUrl.value)
+    images.value.push(URL.createObjectURL(file))
   }
 }
 
@@ -428,34 +419,6 @@ function removeImage(index) {
   background: #ccc;
 }
 
-.header-title {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 0.5rem 1.5rem;
-  font-family: 'Segoe UI', Tahoma, sans-serif;
-  direction: rtl;
-  background: #f5f5f5;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  margin: 0 0 1rem 0;
-}
-
-.header-line {
-  display: flex;
-  gap: 0.25rem;
-  font-size: 1rem;
-  color: #333;
-}
-
-.header-line .label {
-  font-weight: bold;
-}
-
-.header-line .value {
-  font-weight: normal;
-  direction: ltr; 
-}
 .report {
   margin: auto;
   font-size: 1rem;
@@ -500,14 +463,6 @@ function removeImage(index) {
   font-size: 14px;
   font-weight: bold;
   /* text-align: right; */
-}
-
-.header-fields {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
-  width: 100%;
 }
 
 .field {
@@ -559,50 +514,8 @@ select {
   background-color: #f9f9f9;
 
 }
-.section-page::before {
-  content: 'מקטעים';
-  display: block;
-  height: 1px;
-  background-color: #ddd;
-  margin-bottom: 12px;
-}
 .full-width {
   width: 100%;
-}
-
-.company-info {
-  display: flex;
-  flex-direction: column;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-table{
-  width: 100%;
-  margin-bottom: 20px;
-  text-align: center;
-}
-table th, table td {
-  padding: 1px;
-  border: 1px solid #ddd;
-  text-align: center;
-  
-}
-table thead {
-  font-weight: bold;
-  
-}
-table input {
-  border: none;
-  text-align: center;
-}
-
-table select {
-  width: 100%;
-  padding: 4px;
-  border-radius: 4px;
-  border: none;
-
 }
 
 .section-grid {
@@ -699,14 +612,6 @@ table select {
   font-family: "Segoe UI", "Heebo", sans-serif;
   padding: 0 10px;
 }
-.show-on-print {
-  display: none !important;
-}
-
-.hide-on-print {
-  display: block !important;
-}
-
 .auto-textarea {
   display: block;
   width: 100%;

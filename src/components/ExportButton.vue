@@ -5,9 +5,12 @@
 </template>
 
 <script>
-// import html2pdf from 'html2pdf.js';
 export default {
-  props: ['message'],
+  props: {
+    // The browser uses document.title as the suggested PDF filename, so this
+    // string becomes the saved file's name.
+    message: { type: String, required: true },
+  },
   methods: {
     exportToPDF() {
       document.title = this.message

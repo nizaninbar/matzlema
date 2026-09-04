@@ -63,8 +63,7 @@
     </div>
     <div class="form-group">
       <label>ממצאים</label>
-      <textarea v-model="section.description">
-      </textarea>
+      <textarea v-model="section.description"></textarea>
     </div>
 
     
@@ -96,8 +95,6 @@ function submitSection() {
   section.length = ''; // Reset length to empty
   section.sequence += 1; // Increment sequence for new section
   section.filename = section.sequence.toString().padStart(2, '0'); // Reset filename to empty
-
-  // Object.keys(section).forEach(k => section[k] = '');
 }
 </script>
 
