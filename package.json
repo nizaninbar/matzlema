@@ -1,13 +1,16 @@
 {
   "name": "vue-pipeline-app",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "deploy": "gh-pages -d dist",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "node scripts/deploy.mjs",
+    "deploy:staging": "node scripts/deploy.mjs staging",
+    "deploy:v1": "node scripts/deploy.mjs v1",
+    "deploy:prod": "node scripts/deploy.mjs prod"
   },
   "dependencies": {
     "html2pdf.js": "^0.10.3",
