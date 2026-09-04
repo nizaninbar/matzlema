@@ -18,16 +18,25 @@ index.html                        app shell, Hebrew <title>, favicon
 vite.config.js                    base path + vue plugin
 src/main.js                       createApp(App).mount('#app')
 src/style.css                     global styles + the entire @media print stylesheet
-src/App.vue                       layout (form | report), owns `sections`, beforeunload guard
+src/App.vue                       layout (form | report), owns `sections`, hosts the shared
+                                  diameter <datalist>, beforeunload guard
 src/components/SectionForm.vue    left pane: "add a section" form
-src/components/SectionList.vue    right pane: the whole report document (760 lines)
+src/components/SectionList.vue    right pane: the whole report document
 src/components/ExportButton.vue   sets document.title, calls window.print()
-src/components/HelloWorld.vue     dead Vite scaffold, not imported anywhere
-src/assets/mazlema.png            company logo (in the report header)
-src/assets/sig.jpg                scanned signature (in the summary block)
-src/assets/vue.svg, public/vite.svg   dead scaffold assets
-dist.zip                          committed build artifact (372 KB) — should not be in git
+src/constants/pipe.js             diameters, materials, directions, purposes, section defaults
+src/constants/report.js           report-level defaults (summary opening line, report number)
+src/config/company.js             company + certified-photographer details, logo, signature
+src/utils/date.js                 todayISO() — local, not UTC
+src/assets/mazlema.png            company logo (imported via config/company.js)
+src/assets/sig.jpg                scanned signature (imported via config/company.js)
 ```
+
+Anything the operator can choose lives in `src/constants/`, and both panes render
+their dropdowns from those lists, so the form and the section table cannot drift apart.
+Diameter is a text input backed by one shared `<datalist>` in `App.vue` — standard sizes
+are one click, nonstandard sizes are still typeable. A `<datalist>` is resolved by `id`
+across the whole document, which is why exactly one instance exists and neither pane owns
+it.
 
 ## Component graph and data flow
 
@@ -51,17 +60,18 @@ The data flow is deliberately asymmetric and this is the main structural smell:
 
 ## Data model
 
-A **section** (created in [SectionForm.vue:80](../src/components/SectionForm.vue#L80)):
+A **section** (created in [SectionForm.vue](../src/components/SectionForm.vue), vocabulary
+and defaults from [constants/pipe.js](../src/constants/pipe.js)):
 
 ```js
 {
   filename:    '00',        // which video file this section corresponds to
   from:        '',          // "מתא" — from manhole
   to:          '',          // "לתא" — to manhole
-  diameter:    '',          // mm; select in the form, free text in the list
-  pipeType:    'PVC',       // PVC / פוליאתילן / פיברגלס / פלדה / אסבסט / פלדקס / בטון / אחר
+  diameter:    '',          // mm; free text, DIAMETERS offered as datalist suggestions
+  pipeType:    'PVC',       // one of PIPE_TYPES
   length:      '',          // metres (number)
-  direction:   'מורד הקו',   // downstream / upstream
+  direction:   'מורד הקו',   // one of DIRECTIONS — downstream / upstream
   description: 'תקין',      // findings; defaults to "OK"
   sequence:    0            // form-local counter, copied into every section
 }

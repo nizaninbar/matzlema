@@ -1,7 +1,10 @@
 # Code review
 
 Review of the project as of commit `36615a9`. Findings are ordered by impact, not by
-effort. Nothing here has been changed yet — this is the input for the refactor.
+effort.
+
+**Progress:** steps 1 and 2 of the refactor order are done. Resolved items are marked
+**[FIXED]** with the commit that did it; everything unmarked is still outstanding.
 
 ## Bugs
 
@@ -87,25 +90,31 @@ header, adding a metadata row, or printing to Letter breaks the layout.
 `diameter: ''` (the diameter `<select>` has no default selected option), and that row
 prints. Require at least `from`, `to`, `diameter`, `length`.
 
-## Dead code and repo hygiene
+## Dead code and repo hygiene — **[FIXED]** in `0ec80dc`
 
-- **`src/components/HelloWorld.vue`** — Vite scaffold, imported nowhere. Delete.
-- **`src/assets/vue.svg`, `public/vite.svg`** — scaffold assets. Delete.
-- **`html2pdf.js` dependency** — the only import is commented out in `ExportButton`.
-  Remove it from `package.json` (it is a heavy dep to carry for nothing).
-- **`dist.zip` (372 KB) is committed** while `dist/` is gitignored. Remove it from the repo.
-- **`table { … }` rules in `SectionList`** (~30 lines) — no `<table>` exists any more.
-- **`.show-on-print` / `.hide-on-print`** — defined in both `style.css` and
-  `SectionList`'s scoped block, with _opposite_ rules, and applied to no element.
-- **The empty `.form-group` with `visibility: hidden`**
-  ([SectionForm.vue:7](../src/components/SectionForm.vue#L7)) — a grid-alignment spacer.
-  Express it with `grid-column` instead.
-- **Leftover `const imageUrl = ref(null)` inside `handleFileChange`** — a reactive ref
-  created and discarded per call; it should be a plain local.
-- **Commented-out code** in `App.vue`, `SectionList.vue` (lines 224-226, 349),
-  `SectionForm.vue:100`, `style.css`. Delete or act on it.
-- **Textareas with both `v-model` and inner text** (`SectionForm.vue:66`,
-  `SectionList.vue:237`) — the inner content is ignored by Vue and is misleading to read.
+All removals were verified unreferenced first, including a check that no `:class`
+bindings could reach the deleted CSS.
+
+- ~~`HelloWorld.vue`, `src/assets/vue.svg`, `public/vite.svg`~~ — deleted.
+- ~~`html2pdf.js` dependency~~ — removed; its only use was a commented-out import.
+- ~~`dist.zip` (372 KB)~~ — removed; tag `deploy/v1.0.0` preserves the built bytes properly.
+- ~~`table { … }` rules, `.show-on-print`/`.hide-on-print`, `.header-title`/`.header-line`/
+  `.header-fields`/`.company-info`, `.section-page`~~ — deleted, ~90 lines. Bundled CSS
+  8.59 → 7.13 kB.
+- ~~`#page-header` + the `@page { @top-center }` running-header block~~ — deleted; no
+  element ever had that id, and browsers don't implement running headers anyway.
+- ~~Leftover `ref(null)` inside `handleFileChange`~~, ~~commented-out code~~, ~~textareas
+  with both `v-model` and inner text~~ — all cleaned.
+- **Also found during the sweep:** `App.vue` passed `:sections` to `SectionList`, which
+  declares no such prop, so Vue leaked it into the DOM as a stringified attribute. Removed.
+- **Still open:** the empty `.form-group` with `visibility: hidden`
+  ([SectionForm.vue](../src/components/SectionForm.vue)) is a grid-alignment spacer; express
+  it with `grid-column` when the form is restyled in step 5.
+
+Tooling added in the same commit: ESLint (+ `eslint-plugin-vue`) for correctness, Prettier
+for formatting, `eslint-config-prettier` last so they cannot disagree. `.gitattributes`
+pins LF, because Prettier writes LF while `core.autocrlf=true` checked out CRLF — which
+made `format:check` fail on a fresh clone on Windows.
 
 ## Structural issues
 
@@ -134,21 +143,28 @@ composable is enough at this size, no Pinia needed — exposing `report`, `addSe
 `removeSection`, `moveSection`, `addImage`, `removeImage`, `toJSON`, `fromJSON`. That also
 makes autosave and undo tractable.
 
-### Duplicated domain constants
+### Duplicated domain constants — **[FIXED]** in `aef3fde`
 
-The pipe-material list (8 options) and direction list are written out twice — once in
-`SectionForm`, once in `SectionList`; the diameter list exists in `SectionForm` only, and
-the list view degrades it to a free-text input, so the two panes disagree about what a
-valid diameter is. Extract to `src/constants/pipe.js` (`PIPE_TYPES`, `DIAMETERS`,
-`DIRECTIONS`, `PIPE_PURPOSES`) and render with `v-for`.
+Now in [constants/pipe.js](../src/constants/pipe.js) (`DIAMETERS`, `PIPE_TYPES`,
+`DIRECTIONS`, `PIPE_PURPOSES`, `SECTION_DEFAULTS`) and
+[constants/report.js](../src/constants/report.js), rendered with `v-for` in both panes.
 
-### Hard-coded company and personnel data
+The diameter disagreement was settled in favour of a text input backed by one shared
+`<datalist>`: standard sizes stay one click away, nonstandard sizes remain typeable (the
+list pane already allowed them), and the old `<option value="*">אחר</option>` sentinel —
+which stored a literal `*` and printed it into the report — is gone. The `<datalist>` lives
+in `App.vue` because it is resolved by `id` document-wide, so exactly one instance must
+exist and neither pane can own it.
 
-Photographer name, certificate number, address, postcode, phone, fax, email, VAT number
-and the signature image are in the template
-([SectionList.vue:75-140](../src/components/SectionList.vue#L75-L140)). Move to
-`src/config/company.js` so a staffing or phone-number change is a one-line edit — and so a
-second certified operator can be supported at all.
+Report-level defaults were also each written twice (at ref creation, then again as the JSON
+loader's fallback) and are now single-sourced.
+
+### Hard-coded company and personnel data — **[FIXED]** in `aef3fde`
+
+Now in [config/company.js](../src/config/company.js), including the logo and signature
+imports. The letterhead renders from `COMPANY_DETAIL_ROWS`, turning 56 lines of repeated
+markup into one `v-for`. A staffing or phone-number change is a one-line edit, and this is
+the seam a second certified operator would be added through.
 
 ### No design tokens
 
@@ -163,16 +179,18 @@ custom properties plus one `.btn` / `.btn--primary` pattern.
 - **No persistence.** A refresh or a crash loses the entire report; the only safety net is
   the manual JSON download and the (broken) unload dialog. localStorage autosave with a
   "restore draft?" prompt would be the single highest-value addition.
-- **No tests, no linter, no formatter.** At minimum: ESLint + `eslint-plugin-vue`,
-  Prettier, and Vitest around the JSON round-trip and the totals calculation.
+- **No tests.** ESLint and Prettier are in place (`0ec80dc`), but there is still no test
+  runner. Vitest around the JSON round-trip, the totals calculation, and `todayISO()` is
+  the outstanding half.
 - **`index.html` declares `lang="en"`** for an all-Hebrew RTL document, sets `dir` nowhere
   (it is applied in CSS instead), and serves a PNG favicon as `type="image/x-icon"`.
 - **Accessibility:** no `<label for>` / `id` pairing anywhere; the icon-only controls
   (`🔼 🔽 ✖`) carry `title` but no `aria-label`; the print-only text swap is done with
   `display: none` duplicates rather than semantic markup.
-- **`new Date().toISOString().substr(0, 10)`** uses the deprecated `substr` and is UTC —
-  in Israel (UTC+2/+3) a report opened before 02:00/03:00 local time is dated yesterday.
-  Use a local-date formatter.
+- ~~**`new Date().toISOString().substr(0, 10)`** is UTC — a report created before
+  02:00/03:00 local time in Israel is dated yesterday.~~ **[FIXED]** in `143e12c` via
+  `todayISO()` in [utils/date.js](../src/utils/date.js). Confirmed live, not theoretical:
+  at 00:08 local on 2026-09-05 the old expression returned `2026-09-04`.
 - **Single-file image upload.** The input lacks `multiple`, so stills are attached one at a
   time — tedious for a real inspection with a dozen images. Drag-and-drop would fit here.
 - **Images are not linked to sections.** They land in one flat gallery, so the report
@@ -182,9 +200,10 @@ custom properties plus one `.btn` / `.btn--primary` pattern.
 
 ## Suggested refactor order
 
-1. **Hygiene** — delete dead files/CSS/deps, remove `dist.zip`, add ESLint + Prettier.
-   No behavior change, shrinks the surface for everything below.
-2. **Extract constants and company config** — kills the form/list disagreement.
+1. ~~**Hygiene** — delete dead files/CSS/deps, remove `dist.zip`, add ESLint + Prettier.~~
+   **DONE** — `0ec80dc`, `a84ff34` (formatting pass, isolated), `6c0d2e5` (LF pinning).
+2. ~~**Extract constants and company config** — kills the form/list disagreement.~~
+   **DONE** — `aef3fde`, plus `143e12c` for the local-date fix the de-duplication exposed.
 3. **Introduce `useReport()`** and move all report state into it; `SectionList` becomes a
    pure view. Fixes findings #3 and #4 as a side effect.
 4. **Fix the image pipeline** (#1) — data URIs, with downscaling.
