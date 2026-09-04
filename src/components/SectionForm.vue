@@ -16,37 +16,13 @@
     </div>
     <div class="form-group">
       <label>קוטר (מ"מ)</label>
-      <select v-model="section.diameter">
-        <option value="110">110</option>
-        <option value="160">160</option>
-        <option value="200">200</option>
-        <option value="225">225</option>
-        <option value="250">250</option>
-        <option value="300">300</option>
-        <option value="315">315</option>
-        <option value="335">335</option>
-        <option value="400">400</option>
-        <option value="450">450</option>
-        <option value="500">500</option>
-        <option value="600">600</option>
-        <option value="800">800</option>
-        <option value="1000">1000</option>
-        <option value="1250">1250</option>
-        <option value="*">אחר</option>
-      </select>
+      <input v-model="section.diameter" list="diameter-options" />
     </div>
 
     <div class="form-group">
       <label>סוג צינור</label>
       <select v-model="section.pipeType">
-        <option value="PVC">PVC</option>
-        <option value="פוליאתילן">פוליאתילן</option>
-        <option value="פיברגלס">פיברגלס</option>
-        <option value="פלדה">פלדה</option>
-        <option value="אסבסט">אסבסט</option>
-        <option value="פלדקס">פלדקס</option>
-        <option value="בטון">בטון</option>
-        <option value="אחר">אחר</option>
+        <option v-for="type in PIPE_TYPES" :key="type" :value="type">{{ type }}</option>
       </select>
     </div>
     <div class="form-group">
@@ -56,8 +32,7 @@
     <div class="form-group">
       <label>כיוון צילום</label>
       <select v-model="section.direction">
-        <option value="מורד הקו">מורד הקו</option>
-        <option value="מעלה הקו">מעלה הקו</option>
+        <option v-for="dir in DIRECTIONS" :key="dir" :value="dir">{{ dir }}</option>
       </select>
     </div>
     <div class="form-group">
@@ -70,26 +45,25 @@
 </template>
 <script setup>
 import { reactive } from 'vue'
+import { PIPE_TYPES, DIRECTIONS, SECTION_DEFAULTS } from '../constants/pipe'
 
 const emit = defineEmits(['add-section'])
 const section = reactive({
   from: '',
   to: '',
   diameter: '',
-  pipeType: 'PVC',
   length: '',
-  direction: 'מורד הקו',
-  description: 'תקין',
   sequence: 0,
   filename: '00',
+  ...SECTION_DEFAULTS,
 })
 
 function submitSection() {
   emit('add-section', { ...section })
-  section.description = 'תקין' // Reset status to default
-  section.length = '' // Reset length to empty
-  section.sequence += 1 // Increment sequence for new section
-  section.filename = section.sequence.toString().padStart(2, '0') // Reset filename to empty
+  section.description = SECTION_DEFAULTS.description
+  section.length = ''
+  section.sequence += 1
+  section.filename = section.sequence.toString().padStart(2, '0')
 }
 </script>
 

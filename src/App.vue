@@ -1,5 +1,14 @@
 <template>
   <div class="app">
+    <!--
+      A <datalist> is referenced by id across the whole document, so exactly one
+      instance must exist. Both panes offer diameter suggestions, so it lives
+      here rather than inside either of them.
+    -->
+    <datalist id="diameter-options">
+      <option v-for="d in DIAMETERS" :key="d" :value="d"></option>
+    </datalist>
+
     <div class="layout">
       <SectionForm @add-section="addSection" />
       <!-- SectionList reads `sections` via inject, not props -->
@@ -12,6 +21,7 @@
 import { ref, provide, onMounted, onBeforeUnmount } from 'vue'
 import SectionForm from './components/SectionForm.vue'
 import SectionList from './components/SectionList.vue'
+import { DIAMETERS } from './constants/pipe'
 
 // FIXME: hardcoded, so the unload prompt fires even on an untouched page.
 // Should be set on the first mutation and cleared on save. See docs/REVIEW.md #4.

@@ -4,7 +4,7 @@
       <!-- Header -->
       <div class="report-header page-break-avoid">
         <div class="logo-container">
-          <img src="../assets/mazlema.png" alt="לוגו" class="logo" />
+          <img :src="COMPANY.logo" alt="לוגו" class="logo" />
         </div>
         <h2>דו"ח צילום צנרת מס'<br />{{ reportNumber }}</h2>
 
@@ -36,10 +36,9 @@
             </div>
             <div class="cell">
               <select v-model="pipePurpose">
-                <option value="מים">מים</option>
-                <option value="ביוב">ביוב</option>
-                <option value="ניקוז">ניקוז</option>
-                <option value="השחלה">השחלה</option>
+                <option v-for="purpose in PIPE_PURPOSES" :key="purpose" :value="purpose">
+                  {{ purpose }}
+                </option>
               </select>
             </div>
           </div>
@@ -78,53 +77,11 @@
         </div>
 
         <div class="vertical-form">
-          <div class="form-row">
+          <div v-for="row in COMPANY_DETAIL_ROWS" :key="row.label" class="form-row">
             <div class="cell">
-              <label>צלם מוסמך</label>
+              <label>{{ row.label }}</label>
             </div>
-            <div class="cell">דוד כהן</div>
-          </div>
-          <div class="form-row">
-            <div class="cell">
-              <label>מס' תעודה</label>
-            </div>
-            <div class="cell">23774</div>
-          </div>
-          <div class="form-row">
-            <div class="cell">
-              <label>כתובת</label>
-            </div>
-            <div class="cell">הירדן 2, מושב ישרש</div>
-          </div>
-          <div class="form-row">
-            <div class="cell">
-              <label>מיקוד</label>
-            </div>
-            <div class="cell">76838</div>
-          </div>
-          <div class="form-row">
-            <div class="cell">
-              <label>טל'</label>
-            </div>
-            <div class="cell">054-6655305</div>
-          </div>
-          <div class="form-row">
-            <div class="cell">
-              <label>טלפקס</label>
-            </div>
-            <div class="cell">08-6168321</div>
-          </div>
-          <div class="form-row">
-            <div class="cell">
-              <label>דוא"ל</label>
-            </div>
-            <div class="cell">office@matzlema.co.il</div>
-          </div>
-          <div class="form-row">
-            <div class="cell">
-              <label>ע.מ</label>
-            </div>
-            <div class="cell">035920024</div>
+            <div class="cell">{{ row.value }}</div>
           </div>
         </div>
       </div>
@@ -154,24 +111,18 @@
             <div class="grid-cell"><input v-model="section.filename" /></div>
             <div class="grid-cell"><input v-model="section.from" /></div>
             <div class="grid-cell"><input v-model="section.to" /></div>
-            <div class="grid-cell"><input v-model="section.diameter" /></div>
+            <div class="grid-cell">
+              <input v-model="section.diameter" list="diameter-options" />
+            </div>
             <div class="grid-cell">
               <select v-model="section.pipeType">
-                <option value="PVC">PVC</option>
-                <option value="פוליאתילן">פוליאתילן</option>
-                <option value="פיברגלס">פיברגלס</option>
-                <option value="פלדה">פלדה</option>
-                <option value="אסבסט">אסבסט</option>
-                <option value="פלדקס">פלדקס</option>
-                <option value="בטון">בטון</option>
-                <option value="אחר">אחר</option>
+                <option v-for="type in PIPE_TYPES" :key="type" :value="type">{{ type }}</option>
               </select>
             </div>
             <div class="grid-cell"><input type="number" v-model="section.length" step="any" /></div>
             <div class="grid-cell">
               <select v-model="section.direction">
-                <option value="מורד הקו">מורד הקו</option>
-                <option value="מעלה הקו">מעלה הקו</option>
+                <option v-for="dir in DIRECTIONS" :key="dir" :value="dir">{{ dir }}</option>
               </select>
             </div>
           </div>
@@ -214,8 +165,8 @@
         <p class="no-bold">1. צולמו קיטעי {{ pipePurpose }}, ב{{ location }}</p>
         <textarea class="full-width no-bold" rows="10" v-model="summaryText"></textarea>
         <div class="signature">
-          <p>בברכה: דוד כהן</p>
-          <img src="../assets/sig.jpg" alt="חתימה" />
+          <p>בברכה: {{ COMPANY.photographer }}</p>
+          <img :src="COMPANY.signature" alt="חתימה" />
         </div>
       </div>
     </div>
@@ -242,14 +193,18 @@
 <script setup>
 import { inject, ref } from 'vue'
 import ExportButton from './ExportButton.vue'
+import { COMPANY, COMPANY_DETAIL_ROWS } from '../config/company'
+import { PIPE_TYPES, DIRECTIONS, PIPE_PURPOSES, DEFAULT_PIPE_PURPOSE } from '../constants/pipe'
+import { DEFAULT_SUMMARY_TEXT, DEFAULT_REPORT_NUMBER } from '../constants/report'
+
 const sections = inject('sections')
 const customerName = ref('')
 const reportDate = ref(new Date().toISOString().substr(0, 10))
-const reportNumber = ref(0)
+const reportNumber = ref(DEFAULT_REPORT_NUMBER)
 const location = ref('')
-const pipePurpose = ref('ביוב')
+const pipePurpose = ref(DEFAULT_PIPE_PURPOSE)
 const additionalInfo = ref('')
-const summaryText = ref('2. הקטעים שצולמו\n')
+const summaryText = ref(DEFAULT_SUMMARY_TEXT)
 
 function autoGrow(event) {
   const el = event.target
@@ -292,14 +247,14 @@ function handleUpload(event) {
       const json = JSON.parse(reader.result)
 
       sections.value = json.sections || []
-      reportNumber.value = json.reportNumber || 0
+      reportNumber.value = json.reportNumber || DEFAULT_REPORT_NUMBER
       customerName.value = json.customerName || ''
       reportDate.value = json.reportDate || new Date().toISOString().substr(0, 10)
       location.value = json.location || ''
-      pipePurpose.value = json.pipePurpose || 'ביוב'
+      pipePurpose.value = json.pipePurpose || DEFAULT_PIPE_PURPOSE
       additionalInfo.value = json.additionalInfo || ''
       images.value = json.images || []
-      summaryText.value = json.summaryText || '2. הקטעים שצולמו\n'
+      summaryText.value = json.summaryText || DEFAULT_SUMMARY_TEXT
     } catch {
       alert('קובץ JSON שגוי')
     }
