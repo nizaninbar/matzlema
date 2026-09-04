@@ -25,15 +25,15 @@ Requires Node 18+ (Vite 6).
 
 ## What the app does
 
-| Step | Where |
-|------|-------|
-| Fill in report metadata (report no., site, purpose, customer, date, notes) | report header, [SectionList.vue](src/components/SectionList.vue) |
-| Add inspected sections (manhole→manhole, diameter, pipe material, length, direction, findings) | [SectionForm.vue](src/components/SectionForm.vue) |
-| Review / edit / reorder / delete sections | section cards in [SectionList.vue](src/components/SectionList.vue) |
-| Attach still images | file input in [SectionList.vue](src/components/SectionList.vue) |
-| Write the closing summary, auto-totals, signature block | summary block in [SectionList.vue](src/components/SectionList.vue) |
-| Export to PDF | [ExportButton.vue](src/components/ExportButton.vue) — triggers `window.print()` |
-| Save / load work in progress | `downloadJSON` / `handleUpload` in [SectionList.vue](src/components/SectionList.vue) |
+| Step                                                                                           | Where                                                                                |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Fill in report metadata (report no., site, purpose, customer, date, notes)                     | report header, [SectionList.vue](src/components/SectionList.vue)                     |
+| Add inspected sections (manhole→manhole, diameter, pipe material, length, direction, findings) | [SectionForm.vue](src/components/SectionForm.vue)                                    |
+| Review / edit / reorder / delete sections                                                      | section cards in [SectionList.vue](src/components/SectionList.vue)                   |
+| Attach still images                                                                            | file input in [SectionList.vue](src/components/SectionList.vue)                      |
+| Write the closing summary, auto-totals, signature block                                        | summary block in [SectionList.vue](src/components/SectionList.vue)                   |
+| Export to PDF                                                                                  | [ExportButton.vue](src/components/ExportButton.vue) — triggers `window.print()`      |
+| Save / load work in progress                                                                   | `downloadJSON` / `handleUpload` in [SectionList.vue](src/components/SectionList.vue) |
 
 There is **no backend**. All state lives in memory; the only persistence is the
 manual JSON download/upload.

@@ -1,7 +1,5 @@
 <template>
-  <button @click="exportToPDF" class="export-button">
-    ייצוא לדוח PDF
-  </button>
+  <button @click="exportToPDF" class="export-button">ייצוא לדוח PDF</button>
 </template>
 
 <script>
@@ -14,10 +12,10 @@ export default {
   methods: {
     exportToPDF() {
       document.title = this.message
-      window.print();
-    }
-  }
-};
+      window.print()
+    },
+  },
+}
 </script>
 
 <style scoped>
@@ -29,7 +27,9 @@ export default {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition:
+    background-color 0.3s,
+    transform 0.2s;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   margin: 20px auto;
   display: block;

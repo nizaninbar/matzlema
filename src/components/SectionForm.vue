@@ -4,20 +4,19 @@
       <label>שיוך לקובץ</label>
       <input v-model="section.filename" placeholder="שם הקובץ" />
     </div>
-    <div class="form-group" style="visibility: hidden;">
-    </div>
+    <div class="form-group" style="visibility: hidden"></div>
 
     <div class="form-group">
       <label>מתא</label>
-      <input v-model="section.from"  />
+      <input v-model="section.from" />
     </div>
     <div class="form-group">
       <label>לתא</label>
-      <input v-model="section.to"  />
+      <input v-model="section.to" />
     </div>
     <div class="form-group">
       <label>קוטר (מ"מ)</label>
-      <select v-model="section.diameter" >
+      <select v-model="section.diameter">
         <option value="110">110</option>
         <option value="160">160</option>
         <option value="200">200</option>
@@ -66,16 +65,13 @@
       <textarea v-model="section.description"></textarea>
     </div>
 
-    
     <button type="submit" class="submit-button">הוסף מקטע</button>
   </form>
-  
 </template>
 <script setup>
-import { reactive } from 'vue';
+import { reactive } from 'vue'
 
-
-const emit = defineEmits(['add-section']);
+const emit = defineEmits(['add-section'])
 const section = reactive({
   from: '',
   to: '',
@@ -86,15 +82,14 @@ const section = reactive({
   description: 'תקין',
   sequence: 0,
   filename: '00',
-  
-});
+})
 
 function submitSection() {
-  emit('add-section', { ...section });
-  section.description = 'תקין'; // Reset status to default
-  section.length = ''; // Reset length to empty
-  section.sequence += 1; // Increment sequence for new section
-  section.filename = section.sequence.toString().padStart(2, '0'); // Reset filename to empty
+  emit('add-section', { ...section })
+  section.description = 'תקין' // Reset status to default
+  section.length = '' // Reset length to empty
+  section.sequence += 1 // Increment sequence for new section
+  section.filename = section.sequence.toString().padStart(2, '0') // Reset filename to empty
 }
 </script>
 

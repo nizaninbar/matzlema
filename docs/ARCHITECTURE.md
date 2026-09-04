@@ -2,12 +2,12 @@
 
 ## Stack
 
-| Piece | Version | Notes |
-|-------|---------|-------|
-| Vue | 3.5 | Composition API (`<script setup>`), except `ExportButton` |
-| Vite | 6.3 | `base: '/matzlema/'` for GitHub Pages |
-| gh-pages | 6.3 | deploy script |
-| html2pdf.js | 0.10 | **declared but unused** — the import is commented out |
+| Piece       | Version | Notes                                                     |
+| ----------- | ------- | --------------------------------------------------------- |
+| Vue         | 3.5     | Composition API (`<script setup>`), except `ExportButton` |
+| Vite        | 6.3     | `base: '/matzlema/'` for GitHub Pages                     |
+| gh-pages    | 6.3     | deploy script                                             |
+| html2pdf.js | 0.10    | **declared but unused** — the import is commented out     |
 
 No TypeScript, no router, no state library, no linter, no tests.
 
@@ -41,8 +41,8 @@ App.vue
 
 The data flow is deliberately asymmetric and this is the main structural smell:
 
-- **Adding** a section goes *up* through an event to `App`.
-- **Editing, reordering, deleting** a section is done *inside* `SectionList` by
+- **Adding** a section goes _up_ through an event to `App`.
+- **Editing, reordering, deleting** a section is done _inside_ `SectionList` by
   mutating the injected ref.
 - Every other piece of report state (`reportNumber`, `location`, `customerName`,
   `reportDate`, `pipePurpose`, `additionalInfo`, `summaryText`, `images`) is a local
@@ -74,9 +74,15 @@ The **saved report** JSON (`downloadJSON`, filename `<reportNumber>-<customerNam
 
 ```json
 {
-  "reportNumber": 0, "customerName": "", "reportDate": "YYYY-MM-DD",
-  "location": "", "pipePurpose": "ביוב", "additionalInfo": "",
-  "sections": [ /* … */ ], "images": [ /* … */ ], "summaryText": "…"
+  "reportNumber": 0,
+  "customerName": "",
+  "reportDate": "YYYY-MM-DD",
+  "location": "",
+  "pipePurpose": "ביוב",
+  "additionalInfo": "",
+  "sections": [/* … */],
+  "images": [/* … */],
+  "summaryText": "…"
 }
 ```
 

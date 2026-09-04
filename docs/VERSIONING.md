@@ -5,22 +5,22 @@ while v2 is rewritten in parallel.** The main URL never shows a half-built app.
 
 ## URL layout
 
-| URL | Version | Purpose |
-|-----|---------|---------|
-| `https://nizaninbar.github.io/matzlema/` | v1 | **Production.** Frozen. Do not deploy here casually. |
-| `https://nizaninbar.github.io/matzlema/next/` | v2 | Staging. Deploy here as often as you like. |
-| `https://nizaninbar.github.io/matzlema/v1/` | v1 | Archive copy. **Already published** — a working fallback exists today. |
+| URL                                           | Version | Purpose                                                                |
+| --------------------------------------------- | ------- | ---------------------------------------------------------------------- |
+| `https://nizaninbar.github.io/matzlema/`      | v1      | **Production.** Frozen. Do not deploy here casually.                   |
+| `https://nizaninbar.github.io/matzlema/next/` | v2      | Staging. Deploy here as often as you like.                             |
+| `https://nizaninbar.github.io/matzlema/v1/`   | v1      | Archive copy. **Already published** — a working fallback exists today. |
 
 All three live on the single `gh-pages` branch, as sibling directories.
 
 ## Git layout
 
-| Ref | What it is |
-|-----|------------|
-| tag `v1.0.0` | The v1 **source** exactly as it shipped (commit `36615a9`). Never moves. |
+| Ref                 | What it is                                                                         |
+| ------------------- | ---------------------------------------------------------------------------------- |
+| tag `v1.0.0`        | The v1 **source** exactly as it shipped (commit `36615a9`). Never moves.           |
 | tag `deploy/v1.0.0` | The v1 **built bytes** exactly as served (gh-pages commit `c16edf0`). Never moves. |
-| branch `v1` | v1 source + deploy tooling. Where a v1 hotfix would go. |
-| branch `master` | The v2 rewrite. |
+| branch `v1`         | v1 source + deploy tooling. Where a v1 hotfix would go.                            |
+| branch `master`     | The v2 rewrite.                                                                    |
 
 `v1.0.0` is the pristine app; the `v1` branch adds only this deploy tooling on top of
 it, no application changes. Having both means the frozen artifact is unambiguous and the

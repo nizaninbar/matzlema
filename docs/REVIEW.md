@@ -22,7 +22,7 @@ re-encoding as JPEG before storing.)
 `autoGrow` ([SectionList.vue:272](../src/components/SectionList.vue#L272)) resizes the
 auto-growing textareas on `@input` only. After `handleUpload` fills `location`,
 `customerName` and `additionalInfo`, nothing triggers it, so multi-line values are clipped
-to the 33px initial height — on screen *and* in print.
+to the 33px initial height — on screen _and_ in print.
 
 **Fix:** a small `v-autogrow` directive (or a watcher + `nextTick`) that also runs on mount
 and whenever the bound value changes.
@@ -41,6 +41,7 @@ of holding a counter in the form.
 ```js
 const hasUnsavedChanges = ref(true) // set to true if something changes
 ```
+
 [App.vue:27](../src/App.vue#L27) — the `beforeunload` prompt fires on a completely
 untouched page, and would fire even right after the user saved. It trains the user to
 dismiss the dialog, which defeats its purpose.
@@ -95,7 +96,7 @@ prints. Require at least `from`, `to`, `diameter`, `length`.
 - **`dist.zip` (372 KB) is committed** while `dist/` is gitignored. Remove it from the repo.
 - **`table { … }` rules in `SectionList`** (~30 lines) — no `<table>` exists any more.
 - **`.show-on-print` / `.hide-on-print`** — defined in both `style.css` and
-  `SectionList`'s scoped block, with *opposite* rules, and applied to no element.
+  `SectionList`'s scoped block, with _opposite_ rules, and applied to no element.
 - **The empty `.form-group` with `visibility: hidden`**
   ([SectionForm.vue:7](../src/components/SectionForm.vue#L7)) — a grid-alignment spacer.
   Express it with `grid-column` instead.

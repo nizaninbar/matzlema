@@ -9,9 +9,9 @@
 </template>
 
 <script setup>
-import { ref, provide, onMounted, onBeforeUnmount } from 'vue';
-import SectionForm from './components/SectionForm.vue';
-import SectionList from './components/SectionList.vue';
+import { ref, provide, onMounted, onBeforeUnmount } from 'vue'
+import SectionForm from './components/SectionForm.vue'
+import SectionList from './components/SectionList.vue'
 
 // FIXME: hardcoded, so the unload prompt fires even on an untouched page.
 // Should be set on the first mutation and cleared on save. See docs/REVIEW.md #4.
@@ -32,11 +32,11 @@ onBeforeUnmount(() => {
   window.removeEventListener('beforeunload', handleBeforeUnload)
 })
 
-const sections = ref([]);
+const sections = ref([])
 function addSection(section) {
-  sections.value.push(section);
+  sections.value.push(section)
 }
-provide('sections', sections);
+provide('sections', sections)
 </script>
 
 <style scoped>

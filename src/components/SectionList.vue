@@ -1,5 +1,4 @@
 <template>
-
   <div class="container">
     <div id="pdf-content" class="report">
       <!-- Header -->
@@ -7,8 +6,7 @@
         <div class="logo-container">
           <img src="../assets/mazlema.png" alt="לוגו" class="logo" />
         </div>
-        <h2>דו"ח צילום צנרת מס'<br/>{{ reportNumber }}</h2>
-
+        <h2>דו"ח צילום צנרת מס'<br />{{ reportNumber }}</h2>
 
         <div class="vertical-form">
           <div class="form-row">
@@ -30,7 +28,6 @@
                 @input="autoGrow($event)"
                 class="auto-textarea"
               />
-
             </div>
           </div>
           <div class="form-row">
@@ -51,7 +48,11 @@
               <label>שם לקוח</label>
             </div>
             <div class="cell">
-              <textarea v-model="customerName" class="auto-textarea" @input="autoGrow($event)"></textarea>
+              <textarea
+                v-model="customerName"
+                class="auto-textarea"
+                @input="autoGrow($event)"
+              ></textarea>
             </div>
           </div>
           <div class="form-row">
@@ -67,7 +68,11 @@
               <label>פרטים נוספים</label>
             </div>
             <div class="cell">
-              <textarea v-model="additionalInfo" class="auto-textarea" @input="autoGrow($event)"></textarea> 
+              <textarea
+                v-model="additionalInfo"
+                class="auto-textarea"
+                @input="autoGrow($event)"
+              ></textarea>
             </div>
           </div>
         </div>
@@ -77,118 +82,98 @@
             <div class="cell">
               <label>צלם מוסמך</label>
             </div>
-            <div class="cell">
-              דוד כהן
-            </div>
+            <div class="cell">דוד כהן</div>
           </div>
           <div class="form-row">
             <div class="cell">
               <label>מס' תעודה</label>
             </div>
-            <div class="cell">
-              23774
-            </div>
+            <div class="cell">23774</div>
           </div>
           <div class="form-row">
             <div class="cell">
               <label>כתובת</label>
             </div>
-            <div class="cell">
-              הירדן 2, מושב ישרש
-            </div>
+            <div class="cell">הירדן 2, מושב ישרש</div>
           </div>
           <div class="form-row">
             <div class="cell">
               <label>מיקוד</label>
             </div>
-            <div class="cell">
-              76838
-            </div>
+            <div class="cell">76838</div>
           </div>
           <div class="form-row">
             <div class="cell">
               <label>טל'</label>
             </div>
-            <div class="cell">
-              054-6655305
-            </div>
+            <div class="cell">054-6655305</div>
           </div>
           <div class="form-row">
             <div class="cell">
               <label>טלפקס</label>
             </div>
-            <div class="cell">
-              08-6168321
-            </div>
+            <div class="cell">08-6168321</div>
           </div>
           <div class="form-row">
             <div class="cell">
               <label>דוא"ל</label>
             </div>
-            <div class="cell">
-              office@matzlema.co.il
-            </div>
+            <div class="cell">office@matzlema.co.il</div>
           </div>
           <div class="form-row">
             <div class="cell">
               <label>ע.מ</label>
             </div>
-            <div class="cell">
-              035920024
-            </div>
+            <div class="cell">035920024</div>
           </div>
         </div>
-
       </div>
 
-      
       <h2>רשימת מקטעים</h2>
 
       <!-- Sections List -->
       <div class="sections-list">
-        
         <div v-for="(section, i) in sections" :key="i" class="section-card page-break-avoid">
-
           <div class="section-controls">
             <button @click="moveUp(i)" :disabled="i === 0" title="העבר מעלה">🔼</button>
-            <button @click="moveDown(i)" :disabled="i === sections.length - 1" title="העבר מטה">🔽</button>
+            <button @click="moveDown(i)" :disabled="i === sections.length - 1" title="העבר מטה">
+              🔽
+            </button>
             <button class="delete-section" @click="removeSection(i)" title="מחק מקטע">✖</button>
           </div>
 
           <div class="section-grid">
+            <div>שיוך לקובץ</div>
+            <div>מתא</div>
+            <div>לתא</div>
+            <div>קוטר (מ"מ)</div>
+            <div>סוג</div>
+            <div>אורך (מ')</div>
+            <div>כיוון</div>
 
-              <div>שיוך לקובץ</div>
-              <div>מתא</div>
-              <div>לתא</div>
-              <div>קוטר (מ"מ)</div>
-              <div>סוג</div>
-              <div>אורך (מ')</div>
-              <div>כיוון</div>
-
-              <div class="grid-cell"><input v-model="section.filename" /></div>
-              <div class="grid-cell"><input v-model="section.from" /></div>
-              <div class="grid-cell"><input v-model="section.to" /></div>
-              <div class="grid-cell"><input v-model="section.diameter" /></div>
-              <div class="grid-cell">
-                <select v-model="section.pipeType">
-                  <option value="PVC">PVC</option>
-                  <option value="פוליאתילן">פוליאתילן</option>
-                  <option value="פיברגלס">פיברגלס</option>
-                  <option value="פלדה">פלדה</option>
-                  <option value="אסבסט">אסבסט</option>
-                  <option value="פלדקס">פלדקס</option>
-                  <option value="בטון">בטון</option>
-                  <option value="אחר">אחר</option>
-                </select>
-              </div>
-              <div class="grid-cell"><input type="number" v-model="section.length" step="any"/></div>
-              <div class="grid-cell">
-                <select v-model="section.direction">
-                  <option value="מורד הקו">מורד הקו</option>
-                  <option value="מעלה הקו">מעלה הקו</option>
-                </select>
-              </div>
-
+            <div class="grid-cell"><input v-model="section.filename" /></div>
+            <div class="grid-cell"><input v-model="section.from" /></div>
+            <div class="grid-cell"><input v-model="section.to" /></div>
+            <div class="grid-cell"><input v-model="section.diameter" /></div>
+            <div class="grid-cell">
+              <select v-model="section.pipeType">
+                <option value="PVC">PVC</option>
+                <option value="פוליאתילן">פוליאתילן</option>
+                <option value="פיברגלס">פיברגלס</option>
+                <option value="פלדה">פלדה</option>
+                <option value="אסבסט">אסבסט</option>
+                <option value="פלדקס">פלדקס</option>
+                <option value="בטון">בטון</option>
+                <option value="אחר">אחר</option>
+              </select>
+            </div>
+            <div class="grid-cell"><input type="number" v-model="section.length" step="any" /></div>
+            <div class="grid-cell">
+              <select v-model="section.direction">
+                <option value="מורד הקו">מורד הקו</option>
+                <option value="מעלה הקו">מעלה הקו</option>
+              </select>
+            </div>
           </div>
 
           <div class="field full-width description-field">
@@ -196,10 +181,9 @@
             <textarea v-model="section.description" rows="3" class="description"></textarea>
             <div class="description-print">{{ section.description }}</div>
           </div>
-
         </div>
       </div>
-      <div >
+      <div>
         <div>
           <!-- Hidden native file input -->
           <input
@@ -211,22 +195,19 @@
           />
 
           <!-- Custom styled button or label -->
-          <label for="fileInput" class="custom-file-upload">
-            צרף תמונה
-          </label>
+          <label for="fileInput" class="custom-file-upload"> צרף תמונה </label>
           <div v-if="images.length" class="onepage page-break-avoid">
             <h3>תמונות שנשלפו</h3>
             <div class="image-preview">
-            <div v-for="(image, index) in images" :key="index" class="image-container">
-              <button @click="removeImage(index)" class="remove-image">✖</button>
-              <img :src="image" alt="Uploaded Image" class="uploaded-image"/>
-            </div>
+              <div v-for="(image, index) in images" :key="index" class="image-container">
+                <button @click="removeImage(index)" class="remove-image">✖</button>
+                <img :src="image" alt="Uploaded Image" class="uploaded-image" />
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="summary page-break-avoid onepage">
-        
         <h2>סיכום דו"ח</h2>
         <p>סך הכל מקטעים: {{ sections.length }}</p>
         <p>סה"כ אורך: {{ sections.reduce((sum, section) => sum + (section.length || 0), 0) }} מ'</p>
@@ -234,42 +215,47 @@
         <textarea class="full-width no-bold" rows="10" v-model="summaryText"></textarea>
         <div class="signature">
           <p>בברכה: דוד כהן</p>
-          <img src="../assets/sig.jpg" alt="חתימה"  />
+          <img src="../assets/sig.jpg" alt="חתימה" />
         </div>
       </div>
     </div>
     <div class="actions">
-      <ExportButton :message="'דוח: ' + reportNumber + ' לקוח: ' + customerName + ' אתר: ' + location "/>
+      <ExportButton
+        :message="'דוח: ' + reportNumber + ' לקוח: ' + customerName + ' אתר: ' + location"
+      />
       <button @click="downloadJSON" class="action-button">שמור דוח</button>
-      <input id="handleUpload" type="file" accept="application/json" @change="handleUpload" class="action-button" style="display: none"/>
+      <input
+        id="handleUpload"
+        type="file"
+        accept="application/json"
+        @change="handleUpload"
+        class="action-button"
+        style="display: none"
+      />
 
       <!-- Custom styled button or label -->
-      <label for="handleUpload" class="action-button">
-        טען דוח
-      </label>
-
+      <label for="handleUpload" class="action-button"> טען דוח </label>
     </div>
   </div>
 </template>
 
 <script setup>
-import { inject, ref } from 'vue';
-import ExportButton from './ExportButton.vue';
-const sections = inject('sections');
-const customerName = ref('');
-const reportDate = ref(new Date().toISOString().substr(0, 10));
-const reportNumber = ref(0);
-const location = ref('');
-const pipePurpose = ref('ביוב');
-const additionalInfo = ref('');
-const summaryText = ref('2. הקטעים שצולמו\n');
+import { inject, ref } from 'vue'
+import ExportButton from './ExportButton.vue'
+const sections = inject('sections')
+const customerName = ref('')
+const reportDate = ref(new Date().toISOString().substr(0, 10))
+const reportNumber = ref(0)
+const location = ref('')
+const pipePurpose = ref('ביוב')
+const additionalInfo = ref('')
+const summaryText = ref('2. הקטעים שצולמו\n')
 
 function autoGrow(event) {
-  const el = event.target;
-  el.style.height = 'auto';          // reset height
-  el.style.height = el.scrollHeight + 'px'; // set to new content height
+  const el = event.target
+  el.style.height = 'auto' // reset height
+  el.style.height = el.scrollHeight + 'px' // set to new content height
 }
-
 
 function downloadJSON(filename = 'report.json') {
   const data = {
@@ -281,66 +267,66 @@ function downloadJSON(filename = 'report.json') {
     additionalInfo: additionalInfo.value,
     sections: sections.value,
     images: images.value,
-    summaryText: summaryText.value
-  };
-  const dataStr = JSON.stringify(data, null, 2); // עם רווחים לקריאות
-  const blob = new Blob([dataStr], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
+    summaryText: summaryText.value,
+  }
+  const dataStr = JSON.stringify(data, null, 2) // עם רווחים לקריאות
+  const blob = new Blob([dataStr], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
 
-  const a = document.createElement('a');
-  a.href = url;
-  filename = reportNumber.value + '-' + customerName.value + '.json'; // יצירת שם קובץ ייחודי
+  const a = document.createElement('a')
+  a.href = url
+  filename = reportNumber.value + '-' + customerName.value + '.json' // יצירת שם קובץ ייחודי
   // filename = filename.replace(/[^a-z0-9]/gi, '_').toLowerCase(); // ניקוי שם הקובץ
-  a.download = filename;
-  a.click();
+  a.download = filename
+  a.click()
 
-  URL.revokeObjectURL(url);
+  URL.revokeObjectURL(url)
 }
 function handleUpload(event) {
-  const file = event.target.files[0];
-  if (!file) return;
+  const file = event.target.files[0]
+  if (!file) return
 
-  const reader = new FileReader();
+  const reader = new FileReader()
   reader.onload = () => {
     try {
-      const json = JSON.parse(reader.result);
+      const json = JSON.parse(reader.result)
 
-      sections.value = json.sections || [];
-      reportNumber.value = json.reportNumber || 0;
-      customerName.value = json.customerName || '';
-      reportDate.value = json.reportDate || new Date().toISOString().substr(0, 10);
-      location.value = json.location || '';
-      pipePurpose.value = json.pipePurpose || 'ביוב';
-      additionalInfo.value = json.additionalInfo || '';
-      images.value = json.images || [];
-      summaryText.value = json.summaryText || '2. הקטעים שצולמו\n';
+      sections.value = json.sections || []
+      reportNumber.value = json.reportNumber || 0
+      customerName.value = json.customerName || ''
+      reportDate.value = json.reportDate || new Date().toISOString().substr(0, 10)
+      location.value = json.location || ''
+      pipePurpose.value = json.pipePurpose || 'ביוב'
+      additionalInfo.value = json.additionalInfo || ''
+      images.value = json.images || []
+      summaryText.value = json.summaryText || '2. הקטעים שצולמו\n'
     } catch {
-      alert("קובץ JSON שגוי");
+      alert('קובץ JSON שגוי')
     }
-  };
-  reader.readAsText(file);
+  }
+  reader.readAsText(file)
 }
 
 function removeSection(index) {
-  sections.value.splice(index, 1);
+  sections.value.splice(index, 1)
 }
 function moveUp(index) {
   if (index > 0) {
-    const temp = sections.value[index];
-    sections.value[index] = sections.value[index - 1];
-    sections.value[index - 1] = temp;
+    const temp = sections.value[index]
+    sections.value[index] = sections.value[index - 1]
+    sections.value[index - 1] = temp
   }
 }
 
 function moveDown(index) {
   if (index < sections.value.length - 1) {
-    const temp = sections.value[index];
-    sections.value[index] = sections.value[index + 1];
-    sections.value[index + 1] = temp;
+    const temp = sections.value[index]
+    sections.value[index] = sections.value[index + 1]
+    sections.value[index + 1] = temp
   }
 }
 
-const images = ref([]);
+const images = ref([])
 
 function handleFileChange(event) {
   const file = event.target.files[0]
@@ -350,7 +336,7 @@ function handleFileChange(event) {
 }
 
 function removeImage(index) {
-  images.value.splice(index, 1);
+  images.value.splice(index, 1)
 }
 </script>
 
@@ -367,7 +353,9 @@ function removeImage(index) {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition:
+    background-color 0.3s,
+    transform 0.2s;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   margin: 20px auto;
   display: block;
@@ -389,17 +377,15 @@ function removeImage(index) {
   width: 100%;
   height: 150px;
   object-fit: cover;
-  max-width: 100%; 
+  max-width: 100%;
   height: auto;
 }
-
 
 .description-print {
   display: none;
 }
 
 .section-controls {
-  
   display: flex;
   flex-direction: row;
   gap: 18px;
@@ -441,16 +427,13 @@ function removeImage(index) {
 }
 
 .logo {
-  
-  height: auto; 
+  height: auto;
   width: 120px;
-  
 }
-.signature{
+.signature {
   display: flex;
   flex-direction: column;
   direction: ltr;
-
 }
 .signature img {
   width: 120px;
@@ -512,7 +495,6 @@ select {
   border-radius: 8px;
   padding: 12px;
   background-color: #f9f9f9;
-
 }
 .full-width {
   width: 100%;
@@ -561,19 +543,17 @@ select {
 .form-row {
   display: flex;
   align-items: flex-start;
-  
 }
 .form-row label {
   padding: 5px;
   text-align: right;
 }
-.form-row div  {
+.form-row div {
   width: 300px;
   font-weight: bold;
   font-size: 14px;
   text-align: right;
   white-space: nowrap;
-  
 }
 
 .form-row div input,
@@ -587,21 +567,19 @@ select {
   text-align: right;
 }
 
-.form-row div{
+.form-row div {
   border: 1px solid #ddd;
   min-height: 33px;
   display: flex;
-
-  
 }
 
-.description-field{
+.description-field {
   border: 1px solid #ddd;
 }
 .summary {
   padding: 25px 0 0 0;
 }
-.summary p{
+.summary p {
   font-weight: bold;
   margin: 0px 0 8px 0;
   padding: 0 10px;
@@ -609,7 +587,7 @@ select {
 .summary textarea {
   font-weight: bold;
   font-size: 1rem;
-  font-family: "Segoe UI", "Heebo", sans-serif;
+  font-family: 'Segoe UI', 'Heebo', sans-serif;
   padding: 0 10px;
 }
 .auto-textarea {
@@ -617,7 +595,7 @@ select {
   width: 100%;
   resize: none;
   overflow: hidden;
-  
+
   line-height: 1.1;
   /* min-height: 10px; */
   font-size: 14px;
@@ -627,7 +605,7 @@ select {
   box-sizing: border-box;
   margin: 0;
   padding: 2px 10px 0 10px;
-  
+
   height: 33px; /* גובה התחלתי */
 }
 
@@ -640,7 +618,7 @@ h3 {
   margin: 15px;
 }
 
-.no-bold{
+.no-bold {
   font-weight: normal !important;
 }
 
@@ -662,5 +640,4 @@ h3 {
   background: rgba(255, 0, 0, 0.8);
   color: white;
 }
-
 </style>

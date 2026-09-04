@@ -25,7 +25,7 @@ work), `/matzlema/next/` is v2 staging, `/matzlema/v1/` is the v1 fallback.
   for it in that same session, never as a step inferred from "deploy this".
 - Append `-- --dry-run` to any target to build and verify without publishing. Prefer it.
 
-`gh-pages` commits *before* it pushes, so a failed deploy leaves a finished commit in
+`gh-pages` commits _before_ it pushes, so a failed deploy leaves a finished commit in
 `node_modules/.cache/gh-pages/`. Push that commit; do not re-run the deploy.
 
 ## Traps

@@ -1,8 +1,8 @@
 @media print {
-  button{
+  button {
     display: none !important;
   }
-  input[type="date"]::-webkit-calendar-picker-indicator {
+  input[type='date']::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
   }
@@ -12,10 +12,10 @@
   form * {
     display: none;
   }
-  .section-card{
+  .section-card {
     border: none !important;
   }
-  .form{
+  .form {
     display: none !important;
   }
 
@@ -28,7 +28,8 @@
     display: block !important;
   }
 
-  #pdf-content, #pdf-content * {
+  #pdf-content,
+  #pdf-content * {
     /* display: block !important; */
     overflow: visible;
   }
@@ -36,68 +37,70 @@
   #pdf-content {
     font-size: 1rem !important;
   }
-  
-  input, select, textarea {
+
+  input,
+  select,
+  textarea {
     border: none !important;
     font: inherit;
     width: 100%;
     appearance: none !important;
     resize: none;
   }
-  .export-button, .action-button{
+  .export-button,
+  .action-button {
     display: none !important;
   }
   .page-break-avoid {
     break-inside: avoid;
-    page-break-inside: avoid; 
+    page-break-inside: avoid;
   }
 
-  body{
+  body {
     overflow: visible !important;
     height: auto !important;
   }
   .report-header {
     margin-bottom: 620px !important;
     box-shadow: none;
-
   }
-  #pdf-content{
+  #pdf-content {
     box-shadow: none !important;
   }
 
-  .onepage{
+  .onepage {
     min-height: 1020px !important;
   }
   .section-controls {
     display: none !important;
   }
 
-  .section-grid input
-  , .section-grid select{
+  .section-grid input,
+  .section-grid select {
     font-weight: normal;
     text-align: center;
   }
 }
 
-
-
 /* style.css – עיצוב בסיסי לאפליקציה */
 
 body {
-  font-family: "Segoe UI", "Heebo", sans-serif;
+  font-family: 'Segoe UI', 'Heebo', sans-serif;
   margin: 0;
   padding: 0;
   direction: rtl;
   background-color: #f4f6f8;
   color: #222;
 }
-html, body {
+html,
+body {
   height: 100vh;
   margin: 0;
   padding: 0;
   overflow: hidden; /* Prevent page scroll */
 }
-h1, h2 {
+h1,
+h2 {
   color: #2c3e50;
   text-align: center;
   margin-bottom: 20px;
@@ -118,13 +121,13 @@ button:focus {
   margin: auto;
 }
 
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 /* Firefox */
-input[type=number] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
