@@ -13,6 +13,33 @@ while v2 is rewritten in parallel.** The main URL never shows a half-built app.
 
 All three live on the single `gh-pages` branch, as sibling directories.
 
+## ⚠ Production is not reproducible from source
+
+**What is live at `/matzlema/` was built from an uncommitted working tree and does not
+correspond to any commit in this repo.** Established by diffing the deployed bundle
+against a rebuild of `v1.0.0`:
+
+- The live JS is **272 KB vs 77 KB** — it bundles ~195 KB of TipTap/ProseMirror, which was
+  never in `package.json` or the lockfile in any commit. An abandoned rich-text experiment.
+- The live DOM has two `show-on-print`/`hide-on-print` element pairs and two extra
+  `textarea`s that `v1.0.0` does not have.
+- Its print CSS contains `.grid-cell div{font-weight:400!important}` and a
+  `.section-grid textarea` rule that exist in **no commit** (`git log --all -S` finds none).
+- `.show-on-print` only gained `!important` at `36615a9`, and the live build lacks it, so
+  the live build **predates `36615a9`** — the commit tagged `v1.0.0`, which has never been
+  deployed.
+
+Consequences:
+
+- **`npm run deploy:prod` from the `v1` branch is not a no-op.** It would replace the live
+  site with never-deployed code and drop those print refinements. The `show-on-print` pair
+  swaps a textarea for a static `white-space: pre-wrap` div when printing, so long
+  multi-line text prints in full rather than clipped — losing it is a real regression.
+- **Tag `deploy/v1.0.0` is the only record of what is actually in production.** Rollback
+  route 3 below (restoring those bytes) is therefore the _accurate_ rollback, not route 2.
+- Reconciling this — recovering the uncommitted print CSS from the deployed bundle and
+  committing it so git finally describes production — is unfinished work.
+
 ## Git layout
 
 | Ref                 | What it is                                                                         |

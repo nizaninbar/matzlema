@@ -23,6 +23,10 @@ work), `/matzlema/next/` is v2 staging, `/matzlema/v1/` is the v1 fallback.
 - `npm run deploy:staging` (from `master`) is the only target that is safe to run freely.
 - `npm run deploy:prod` overwrites the URL people depend on. Run it only when the user asks
   for it in that same session, never as a step inferred from "deploy this".
+- **The live site is not reproducible from source.** It was built from an uncommitted tree
+  that predates `36615a9`, bundles TipTap (never in `package.json`), and has print CSS in
+  no commit. So `deploy:prod` is never a no-op "refresh" — from any branch it _changes_
+  what users get. See docs/VERSIONING.md.
 - Append `-- --dry-run` to any target to build and verify without publishing. Prefer it.
 
 `gh-pages` commits _before_ it pushes, so a failed deploy leaves a finished commit in
