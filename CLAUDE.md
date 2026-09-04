@@ -8,25 +8,23 @@ Hebrew/RTL pipeline CCTV inspection report generator. Vue 3 + Vite, no backend, 
 
 ## Which branch is checked out matters
 
-- `master` — the v2 rewrite (`version: 2.0.0-dev`).
-- `v1` — frozen production. Hotfixes only, never features.
-
-The deploy commands mean different things on each: `deploy:prod` from `v1` is a routine
-hotfix, from `master` it is the promote of the whole rewrite.
+- `master` — the v2 rewrite (`version: 2.0.0-dev`). All current work happens here.
+- `v1` — the tagged v1.0.0 source plus deploy tooling. Note this is **not** what the live
+  site serves (see below), so it is a reference branch more than a hotfix branch.
 
 ## Deploying
 
-Two versions are live simultaneously: `/matzlema/` is production (v1, used for real report
-work), `/matzlema/next/` is v2 staging, `/matzlema/v1/` is the v1 fallback.
+Two versions are served simultaneously: `/matzlema/` is the live app used for real report
+work, `/matzlema/v2/` is the rewrite, `/matzlema/v1/` is a rebuild of tag `v1.0.0`.
 
 - `npm run deploy` deliberately does **not** deploy — it prints usage. Don't "fix" this.
-- `npm run deploy:staging` (from `master`) is the only target that is safe to run freely.
-- `npm run deploy:prod` overwrites the URL people depend on. Run it only when the user asks
-  for it in that same session, never as a step inferred from "deploy this".
-- **The live site is not reproducible from source.** It was built from an uncommitted tree
-  that predates `36615a9`, bundles TipTap (never in `package.json`), and has print CSS in
-  no commit. So `deploy:prod` is never a no-op "refresh" — from any branch it _changes_
-  what users get. See docs/VERSIONING.md.
+- `npm run deploy:v2` publishes to `/matzlema/v2/` and is safe to run freely.
+- **`/matzlema/` is not a deploy target and must stay that way.** The owner wants it
+  untouched indefinitely: it is in daily use, and its build is not reproducible from this
+  source tree (built from an uncommitted state predating `36615a9`, bundling TipTap that
+  was never in `package.json`, with print CSS in no commit). A `prod` target existed and
+  was removed on purpose. Do not re-add one, do not publish to the site root, and do not
+  treat the `v1` branch as a like-for-like replacement for what is live.
 - Append `-- --dry-run` to any target to build and verify without publishing. Prefer it.
 
 `gh-pages` commits _before_ it pushes, so a failed deploy leaves a finished commit in
@@ -34,8 +32,8 @@ work), `/matzlema/next/` is v2 staging, `/matzlema/v1/` is the v1 fallback.
 
 ## Traps
 
-- **Git Bash mangles absolute-path arguments.** `--base=/matzlema/next/` becomes
-  `/Program Files/Git/matzlema/next/` under MSYS, producing a silently broken build. Use
+- **Git Bash mangles absolute-path arguments.** `--base=/matzlema/v2/` becomes
+  `/Program Files/Git/matzlema/v2/` under MSYS, producing a silently broken build. Use
   PowerShell for manual builds, or the npm scripts (immune — the base is a literal in
   `scripts/deploy.mjs`).
 - **All UI text is Hebrew and the layout is RTL.** Don't translate labels, and don't

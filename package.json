@@ -12,9 +12,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "deploy": "node scripts/deploy.mjs",
-    "deploy:staging": "node scripts/deploy.mjs staging",
-    "deploy:v1": "node scripts/deploy.mjs v1",
-    "deploy:prod": "node scripts/deploy.mjs prod"
+    "deploy:v2": "node scripts/deploy.mjs v2",
+    "deploy:v1": "node scripts/deploy.mjs v1"
   },
   "dependencies": {
     "vue": "^3.5.13"

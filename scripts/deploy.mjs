@@ -1,14 +1,17 @@
 /**
  * Deploy a build of this app to a versioned path on the gh-pages branch.
  *
- *   node scripts/deploy.mjs staging       -> /matzlema/next/   (v2 work in progress)
- *   node scripts/deploy.mjs v1           -> /matzlema/v1/     (v1 archive copy)
- *   node scripts/deploy.mjs prod --yes   -> /matzlema/        (the main URL)
+ *   node scripts/deploy.mjs v2   -> /matzlema/v2/   (the new version)
+ *   node scripts/deploy.mjs v1   -> /matzlema/v1/   (rebuild of tag v1.0.0)
+ *
+ * There is deliberately NO target for /matzlema/ itself. That URL is in daily
+ * use for real report work, its build is not reproducible from this source tree
+ * (see docs/VERSIONING.md), and it is to stay exactly as it is. Every target
+ * here writes only into its own subdirectory, so no deploy can reach it.
  *
  * `base` is passed to vite on the command line rather than read from
  * vite.config.js. That is deliberate: it means any past tag or branch can be
- * built for any path without editing its source, so v1 stays frozen and still
- * deployable anywhere.
+ * built for any path without editing its source.
  */
 import { execFileSync } from 'node:child_process'
 import { existsSync, readFileSync } from 'node:fs'
@@ -18,43 +21,34 @@ const SITE = 'https://nizaninbar.github.io/matzlema'
 const ROOT = process.cwd()
 
 const TARGETS = {
-  staging: {
-    dest: 'next',
-    base: '/matzlema/next/',
-    label: 'staging (v2 in progress)',
+  v2: {
+    dest: 'v2',
+    base: '/matzlema/v2/',
+    label: 'v2 — the new version',
   },
   v1: {
     dest: 'v1',
     base: '/matzlema/v1/',
-    label: 'v1 archive',
-  },
-  prod: {
-    dest: '.',
-    base: '/matzlema/',
-    label: 'PRODUCTION — the URL people actually use',
-    confirm: true,
-    // Publishing to the branch root with gh-pages' default `remove: '.'` would
-    // delete the sibling version directories. `add` never deletes, so next/ and
-    // v1/ survive a promote. The cost is that superseded hashed asset files
-    // linger at the root; they are inert and small.
-    add: true,
+    // Not what production serves: production was built from an uncommitted tree
+    // that predates tag v1.0.0. This is a rebuild of the tagged source.
+    label: 'v1.0.0 rebuild (NOT the production build)',
   },
 }
 
 function usage(message) {
   if (message) console.error(`\n  ${message}`)
   console.error(`
-  Usage: node scripts/deploy.mjs <target> [--yes] [--dry-run]
+  Usage: node scripts/deploy.mjs <target> [--dry-run]
 
-    staging   build the current working tree -> ${SITE}/next/
+    v2        build the current working tree -> ${SITE}/v2/
     v1        build the current working tree -> ${SITE}/v1/
-    prod      build the current working tree -> ${SITE}/   (needs --yes)
 
     --dry-run   build and report, but publish nothing
 
-  Whatever is checked out right now is what gets deployed. To redeploy v1:
+  ${SITE}/ is intentionally NOT a target. It is in daily use and stays as it is.
+  Every target above writes only inside its own subdirectory.
 
-    git switch v1 && npm ci && npm run deploy:v1
+  Whatever is checked out right now is what gets deployed.
 `)
   process.exit(1)
 }
@@ -62,14 +56,19 @@ function usage(message) {
 const [name, ...flags] = process.argv.slice(2)
 if (!name) usage('No target given.')
 
+if (name === 'prod' || name === 'staging') {
+  usage(
+    name === 'prod'
+      ? `The "prod" target was removed on purpose: ${SITE}/ is to stay untouched. ` +
+          `Deploy to "v2" instead. See docs/VERSIONING.md if you truly need to change ${SITE}/.`
+      : `"staging" was renamed to "v2" - the new version has a permanent home, not a staging slot.`,
+  )
+}
+
 const target = TARGETS[name]
 if (!target) usage(`Unknown target "${name}". Expected one of: ${Object.keys(TARGETS).join(', ')}.`)
 
 const dryRun = flags.includes('--dry-run')
-
-if (target.confirm && !dryRun && !flags.includes('--yes')) {
-  usage(`"${name}" overwrites ${SITE}/ for every user. Re-run as: npm run deploy:${name} -- --yes`)
-}
 
 const git = (...args) => execFileSync('git', args, { encoding: 'utf8' }).trim()
 
@@ -77,7 +76,7 @@ const describe = git('describe', '--tags', '--always', '--dirty')
 const branch = git('rev-parse', '--abbrev-ref', 'HEAD')
 const dirty = git('status', '--porcelain') !== ''
 
-const url = `${SITE}/${target.dest === '.' ? '' : target.dest + '/'}`
+const url = `${SITE}/${target.dest}/`
 
 console.log(`\n  target   ${name} — ${target.label}${dryRun ? '  [DRY RUN]' : ''}`)
 console.log(`  url      ${url}`)
@@ -118,8 +117,10 @@ await new Promise((resolve, reject) => {
   ghpages.publish(
     path.join(ROOT, 'dist'),
     {
+      // gh-pages' `remove` default of '.' is relative to `dest`, so a deploy
+      // wipes and replaces only its own subdirectory. Sibling versions - and
+      // the site root - are untouchable from here.
       dest: target.dest,
-      add: Boolean(target.add),
       message: `Deploy ${name} from ${branch} @ ${describe}`,
     },
     (err) => (err ? reject(err) : resolve()),
