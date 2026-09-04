@@ -196,10 +196,11 @@ import ExportButton from './ExportButton.vue'
 import { COMPANY, COMPANY_DETAIL_ROWS } from '../config/company'
 import { PIPE_TYPES, DIRECTIONS, PIPE_PURPOSES, DEFAULT_PIPE_PURPOSE } from '../constants/pipe'
 import { DEFAULT_SUMMARY_TEXT, DEFAULT_REPORT_NUMBER } from '../constants/report'
+import { todayISO } from '../utils/date'
 
 const sections = inject('sections')
 const customerName = ref('')
-const reportDate = ref(new Date().toISOString().substr(0, 10))
+const reportDate = ref(todayISO())
 const reportNumber = ref(DEFAULT_REPORT_NUMBER)
 const location = ref('')
 const pipePurpose = ref(DEFAULT_PIPE_PURPOSE)
@@ -249,7 +250,7 @@ function handleUpload(event) {
       sections.value = json.sections || []
       reportNumber.value = json.reportNumber || DEFAULT_REPORT_NUMBER
       customerName.value = json.customerName || ''
-      reportDate.value = json.reportDate || new Date().toISOString().substr(0, 10)
+      reportDate.value = json.reportDate || todayISO()
       location.value = json.location || ''
       pipePurpose.value = json.pipePurpose || DEFAULT_PIPE_PURPOSE
       additionalInfo.value = json.additionalInfo || ''
