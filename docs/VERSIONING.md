@@ -9,7 +9,7 @@ while v2 is rewritten in parallel.** The main URL never shows a half-built app.
 |-----|---------|---------|
 | `https://nizaninbar.github.io/matzlema/` | v1 | **Production.** Frozen. Do not deploy here casually. |
 | `https://nizaninbar.github.io/matzlema/next/` | v2 | Staging. Deploy here as often as you like. |
-| `https://nizaninbar.github.io/matzlema/v1/` | v1 | Archive copy, created when v2 is promoted. |
+| `https://nizaninbar.github.io/matzlema/v1/` | v1 | Archive copy. **Already published** — a working fallback exists today. |
 
 All three live on the single `gh-pages` branch, as sibling directories.
 
@@ -79,6 +79,7 @@ working fallback before production changes.
 git switch v1
 npm ci
 npm run deploy:v1                     # -> /matzlema/v1/
+# (already published once; re-run only if v1 has taken hotfixes since)
 
 # 2. Verify https://nizaninbar.github.io/matzlema/v1/ actually works
 
@@ -95,8 +96,8 @@ git tag v2.0.0
 
 Three routes, cheapest first:
 
-1. **Point users at the archive.** If `/matzlema/v1/` has been published, just send people
-   there. Zero risk, instant.
+1. **Point users at the archive.** `/matzlema/v1/` is already live, so just send people
+   there. Zero risk, instant, no build needed.
 2. **Redeploy v1 over production.**
    ```bash
    git switch v1 && npm ci && npm run deploy:prod -- --yes
@@ -152,6 +153,28 @@ $ node node_modules/vite/bin/vite.js build --base=/matzlema/next/
 
 Use PowerShell for manual builds, or just use the `npm run deploy:*` scripts, which are
 immune because the base is a literal inside the script.
+
+## Troubleshooting: a deploy that fails at the push step
+
+`gh-pages` does its work in a cached clone under
+`node_modules/.cache/gh-pages/https!github.com!nizaninbar!matzlema`. It copies the files,
+commits, and only then pushes — so if the push fails (expired credentials, no network, a
+terminal that can't prompt), **the commit already exists locally** and the deploy is one
+command from done. Don't re-run the deploy; inspect and push:
+
+```bash
+D='node_modules/.cache/gh-pages/https!github.com!nizaninbar!matzlema'
+git -C "$D" log --oneline -2                      # is the Deploy commit there?
+git -C "$D" diff --name-only origin/gh-pages HEAD # confirm it only touches the expected dir
+git -C "$D" push origin gh-pages
+```
+
+The middle command is the one that matters before a `prod` deploy — it tells you exactly
+what is about to change on the live site, and confirms the version subdirectories were not
+touched.
+
+If the cache clone gets into a confusing state, delete the whole
+`node_modules/.cache/gh-pages` directory; the next deploy re-clones it.
 
 ## Notes
 
